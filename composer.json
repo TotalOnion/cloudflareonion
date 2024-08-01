@@ -1,0 +1,23 @@
+{
+    "name": "irishdistillers/global-plugin-prcf",
+    "description": "CloudFlare things",
+    "type": "wordpress-plugin",
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://wpackagist.org"
+        }
+    ],
+    "autoload" : {
+        "psr-4": {
+            "global-plugin-prcf\\": "./"
+        }
+    },
+    "require": {
+        "composer/installers": "~1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.2@dev"
+    },
+    "minimum-stability": "dev"
+}
