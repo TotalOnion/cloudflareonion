@@ -18,21 +18,24 @@ class PrcfManager extends AbstractController
     private function purgeCache($postID): void
     {
         $url = 'https://api.cloudflare.com/client/v4/zones/' . $this->getZoneID() . '/purge_cache';
+        $postUrl = get_permalink($postID);
         $headers = [
-            'Content-Type: application/json',
-            'X-Auth-Key: ' . $this->getAPIKey(),
+            'Content-Type' => 'application/json',
+            'Authorization' => 'Bearer ' . $this->getAPIKey(),
         ];
         // $body = json_encode(['tags' => $cacheTags]);
-        // $body = json_encode([]);
-        // $logger = new Logger(GLOBAL_PRCF_VERSION, GLOBAL_PRCF_NAME);
-        // $logger->logToFile($url);
-        // $logger->logToFile($this->getAPIKey());
-        // wp_remote_post($url, [
-        //     'headers' => $headers,
-        //     'body' => $body,
-        //     'method' => 'POST',
-        //     'data_format' => 'body',
-        // ]);
+        $body = json_encode([
+            'files' => [$postUrl]
+        ]);
+        $response = wp_remote_post($url, [
+            'headers' => $headers,
+            'body' => $body,
+            'method' => 'POST',
+            'data_format' => 'body',
+        ]);
+        $logger = new Logger(GLOBAL_PRCF_VERSION, GLOBAL_PRCF_NAME);
+        $logger->logToAws('Purging cache for ' . $postUrl );
+        $logger->logToAws($response['body']);
     }
     private function getAPIKey(): string
     {

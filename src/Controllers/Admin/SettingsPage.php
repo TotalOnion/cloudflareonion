@@ -106,6 +106,140 @@ class SettingsPage extends AbstractController
                 'type' => 'text'
             ]
         );
+
+        // AWS Logging Settings Section
+        add_settings_section(
+            GLOBAL_PRCF_NAME.'_options_section_aws',
+            'AWS Logging settings',
+            [$this, 'renderSectionIntro'],
+            GLOBAL_PRCF_NAME.'settings-page'
+        );
+
+        // Option to enable AWS Logging
+        add_option(GLOBAL_PRCF_NAME.'_log_aws_enable');
+        register_setting(
+            GLOBAL_PRCF_NAME.'_options',
+            GLOBAL_PRCF_NAME.'_log_aws_enable',
+            [
+                'type' => 'number',
+                'description' => 'Whether or not to enable AWS Logging',
+                'sanitize_callback' => 'sanitize_text_field',
+                'show_in_rest' => true,
+                'default' => ''
+            ]
+        );
+        add_settings_field(
+            GLOBAL_PRCF_NAME.'_log_aws_enable',
+            'Whether to enable Aws Logging',
+            [$this, 'renderField'],
+            GLOBAL_PRCF_NAME.'settings-page',
+            GLOBAL_PRCF_NAME.'_options_section_aws',
+            [
+                'id' => GLOBAL_PRCF_NAME.'_log_aws_enable',
+                'type' => 'checkbox'
+            ]
+        );
+
+        // Option to set the AWS Secret Key
+        add_option(GLOBAL_PRCF_NAME.'_log_aws_secret');
+        register_setting(
+            GLOBAL_PRCF_NAME.'_options',
+            GLOBAL_PRCF_NAME.'_log_aws_secret',
+            [
+                'type' => 'text',
+                'description' => 'AWS Secret Key',
+                'sanitize_callback' => 'sanitize_text_field',
+                'show_in_rest' => true,
+                'default' => ''
+            ]
+        );
+        add_settings_field(
+            GLOBAL_PRCF_NAME.'_log_aws_secret',
+            'Aws Secret Key',
+            [$this, 'renderField'],
+            GLOBAL_PRCF_NAME.'settings-page',
+            GLOBAL_PRCF_NAME.'_options_section_aws',
+            [
+                'id' => GLOBAL_PRCF_NAME.'_log_aws_secret',
+                'type' => 'text'
+            ]
+        );
+
+
+        // Option to set the AWS Access Key
+        add_option(GLOBAL_PRCF_NAME.'_log_aws_access');
+        register_setting(
+            GLOBAL_PRCF_NAME.'_options',
+            GLOBAL_PRCF_NAME.'_log_aws_access',
+            [
+                'type' => 'text',
+                'description' => 'AWS Access Key',
+                'sanitize_callback' => 'sanitize_text_field',
+                'show_in_rest' => true,
+                'default' => ''
+            ]
+        );
+        add_settings_field(
+            GLOBAL_PRCF_NAME.'_log_aws_access',
+            'AWS Access Key',
+            [$this, 'renderField'],
+            GLOBAL_PRCF_NAME.'settings-page',
+            GLOBAL_PRCF_NAME.'_options_section_aws',
+            [
+                'id' => GLOBAL_PRCF_NAME.'_log_aws_access',
+                'type' => 'text'
+            ]
+        );
+
+        // Option to set the AWS Region
+        add_option(GLOBAL_PRCF_NAME.'_log_aws_region');
+        register_setting(
+            GLOBAL_PRCF_NAME.'_options',
+            GLOBAL_PRCF_NAME.'_log_aws_region',
+            [
+                'type' => 'text',
+                'description' => 'AWS Region',
+                'sanitize_callback' => 'sanitize_text_field',
+                'show_in_rest' => true,
+                'default' => ''
+            ]
+        );
+        add_settings_field(
+            GLOBAL_PRCF_NAME.'_log_aws_region',
+            'AWS Region',
+            [$this, 'renderField'],
+            GLOBAL_PRCF_NAME.'settings-page',
+            GLOBAL_PRCF_NAME.'_options_section_aws',
+            [
+                'id' => GLOBAL_PRCF_NAME.'_log_aws_region',
+                'type' => 'text'
+            ]
+        );
+
+        // Option to set the AWS Log Group
+        add_option(GLOBAL_PRCF_NAME.'_log_aws_loggroup');
+        register_setting(
+            GLOBAL_PRCF_NAME.'_options',
+            GLOBAL_PRCF_NAME.'_log_aws_loggroup',
+            [
+                'type' => 'text',
+                'description' => 'AWS Log Group',
+                'sanitize_callback' => 'sanitize_text_field',
+                'show_in_rest' => true,
+                'default' => ''
+            ]
+        );
+        add_settings_field(
+            GLOBAL_PRCF_NAME.'_log_aws_loggroup',
+            'AWS Log Group',
+            [$this, 'renderField'],
+            GLOBAL_PRCF_NAME.'settings-page',
+            GLOBAL_PRCF_NAME.'_options_section_aws',
+            [
+                'id' => GLOBAL_PRCF_NAME.'_log_aws_loggroup',
+                'type' => 'text'
+            ]
+        );
     }
 
     public function renderSectionIntro()
