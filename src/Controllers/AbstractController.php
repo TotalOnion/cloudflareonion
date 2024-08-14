@@ -1,8 +1,8 @@
 <?php
 
-namespace GlobalPrcf\Controllers;
+namespace GlobalCfo\Controllers;
 
-use GlobalPrcf\Exceptions;
+use GlobalCfo\Exceptions;
 
 abstract class AbstractController
 {
@@ -41,7 +41,7 @@ abstract class AbstractController
     protected function render(string $template, ?array $templateData = []): string
     {
         list($folder, $filename) = explode(':', $template);
-        $filename = GLOBAL_PRCF_PLUGIN_FOLDER . '/src/Resources/views/' . $folder . '/' . $filename;
+        $filename = GLOBAL_CFO_PLUGIN_FOLDER . '/src/Resources/views/' . $folder . '/' . $filename;
 
         if (!file_exists($filename)) {
             throw new Exceptions\TemplateException(sprintf('Template %s not found.', $filename));

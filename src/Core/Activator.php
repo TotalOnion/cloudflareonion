@@ -1,8 +1,8 @@
 <?php
 
-namespace GlobalPrcf\Core;
+namespace GlobalCfo\Core;
 
-use GlobalPrcf\Services\AcfImportService;
+use GlobalCfo\Services\AcfImportService;
 
 /**
  * Fired during plugin activation
@@ -10,8 +10,8 @@ use GlobalPrcf\Services\AcfImportService;
  * @link       https://totalonion.com
  * @since      1.0.0
  *
- * @package    GlobalPrcf
- * @subpackage GlobalPrcf/Core
+ * @package    GlobalCfo
+ * @subpackage GlobalCfo/Core
  */
 
 /**
@@ -20,8 +20,8 @@ use GlobalPrcf\Services\AcfImportService;
  * This class defines all code necessary to run during the plugin's activation.
  *
  * @since      1.0.0
- * @package    GlobalPrcf
- * @subpackage GlobalPrcf/Core
+ * @package    GlobalCfo
+ * @subpackage GlobalCfo/Core
  * @author     Johann Biteghe <johann@totalonion.com>
  */
 class Activator {
@@ -50,7 +50,7 @@ class Activator {
         if (!empty($missingPlugins)) {
             $error = new \WP_Error(
                 'broke',
-                __(implode('<br />', $missingPlugins), GLOBAL_PRCF_NAME)
+                __(implode('<br />', $missingPlugins), GLOBAL_CFO_NAME)
             );
             wp_die($error);
         }

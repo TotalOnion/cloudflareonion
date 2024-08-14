@@ -1,6 +1,6 @@
 <?php
 
-namespace GlobalPrcf\Core;
+namespace GlobalCfo\Core;
 
 /**
  * Fired during plugin deactivation
@@ -8,8 +8,8 @@ namespace GlobalPrcf\Core;
  * @link       https://totalonion.com
  * @since      1.0.0
  *
- * @package    GlobalPrcf
- * @subpackage GlobalPrcf/Core
+ * @package    GlobalCfo
+ * @subpackage GlobalCfo/Core
  */
 
 /**
@@ -18,8 +18,8 @@ namespace GlobalPrcf\Core;
  * This class defines all code necessary to run during the plugin's deactivation.
  *
  * @since      1.0.0
- * @package    GlobalPrcf
- * @subpackage GlobalPrcf/Core
+ * @package    GlobalCfo
+ * @subpackage GlobalCfo/Core
  * @author     Johann Biteghe <johann@totalonion.com>
  */
 class Deactivator

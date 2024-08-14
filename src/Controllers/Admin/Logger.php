@@ -1,8 +1,8 @@
 <?php
 
-namespace GlobalPrcf\Controllers\Admin;
+namespace GlobalCfo\Controllers\Admin;
 
-use GlobalPrcf\Controllers\AbstractController;
+use GlobalCfo\Controllers\AbstractController;
 
 class Logger extends AbstractController
 {
@@ -121,22 +121,22 @@ class Logger extends AbstractController
 
     private function setAccessKey(): void
     {
-        $this->accessKey = get_option(GLOBAL_PRCF_NAME.'_log_aws_access');
+        $this->accessKey = get_option(GLOBAL_CFO_NAME.'_log_aws_access');
     }
 
     private function setSecretKey(): void
     {
-        $this->secretKey = get_option(GLOBAL_PRCF_NAME.'_log_aws_secret');
+        $this->secretKey = get_option(GLOBAL_CFO_NAME.'_log_aws_secret');
     }
 
     private function setRegion(): void
     {
-        $this->region = get_option(GLOBAL_PRCF_NAME.'_log_aws_region');
+        $this->region = get_option(GLOBAL_CFO_NAME.'_log_aws_region');
     }
 
     private function setLogGroup(): void
     {
-        $this->logGroup = get_option(GLOBAL_PRCF_NAME.'_log_aws_loggroup');
+        $this->logGroup = get_option(GLOBAL_CFO_NAME.'_log_aws_loggroup');
     }
 
     private function setHost(): void

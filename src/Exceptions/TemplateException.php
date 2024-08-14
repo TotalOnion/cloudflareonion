@@ -1,6 +1,6 @@
 <?php
 
-namespace GlobalPrcf\Exceptions;
+namespace GlobalCfo\Exceptions;
 
 class TemplateException extends \Exception
 {

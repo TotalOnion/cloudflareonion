@@ -1,8 +1,8 @@
 <?php
 
-namespace GlobalPrcf\Controllers\Admin;
+namespace GlobalCfo\Controllers\Admin;
 
-use GlobalPrcf\Controllers\AbstractController;
+use GlobalCfo\Controllers\AbstractController;
 
 class SettingsPage extends AbstractController
 {
@@ -10,10 +10,10 @@ class SettingsPage extends AbstractController
     {
         // reference https://developer.wordpress.org/reference/functions/add_options_page/
         add_options_page(
-            'PRCF Settings',                     // page title
-            'PRCF Settings',                     // menu title
+            'CFO Settings',                     // page title
+            'CFO Settings',                     // menu title
             'manage_options',                   // capability required to access / see it
-            GLOBAL_PRCF_NAME.'settings-page', // slug (needs to be unique)
+            GLOBAL_CFO_NAME.'settings-page', // slug (needs to be unique)
             [$this, 'renderPage']               // callable function to render the page
         );
     }
@@ -22,15 +22,15 @@ class SettingsPage extends AbstractController
     {
         // This created the option in the wp_option table
         // reference https://developer.wordpress.org/reference/functions/add_option/
-        add_option(GLOBAL_PRCF_NAME.'_enableCF');
-        add_option(GLOBAL_PRCF_NAME.'_tokenCF');
-        add_option(GLOBAL_PRCF_NAME.'_zoneID');
+        add_option(GLOBAL_CFO_NAME.'_enableCF');
+        add_option(GLOBAL_CFO_NAME.'_tokenCF');
+        add_option(GLOBAL_CFO_NAME.'_zoneID');
 
         // This marks them as a setting you can edit in the admin
         // reference https://developer.wordpress.org/reference/functions/register_setting/
         register_setting(
-            GLOBAL_PRCF_NAME.'_options',
-            GLOBAL_PRCF_NAME.'_enableCF',
+            GLOBAL_CFO_NAME.'_options',
+            GLOBAL_CFO_NAME.'_enableCF',
             [
                 'type' => 'number',
                 'description' => 'Whether or not to enable CF',
@@ -40,8 +40,8 @@ class SettingsPage extends AbstractController
             ]
         );
         register_setting(
-            GLOBAL_PRCF_NAME.'_options',
-            GLOBAL_PRCF_NAME.'_tokenCF',
+            GLOBAL_CFO_NAME.'_options',
+            GLOBAL_CFO_NAME.'_tokenCF',
             [
                 'type' => 'text',
                 'description' => 'CF token for API calls',
@@ -51,8 +51,8 @@ class SettingsPage extends AbstractController
             ]
         );
         register_setting(
-            GLOBAL_PRCF_NAME.'_options',
-            GLOBAL_PRCF_NAME.'_zoneID',
+            GLOBAL_CFO_NAME.'_options',
+            GLOBAL_CFO_NAME.'_zoneID',
             [
                 'type' => 'text',
                 'description' => 'zone ID',
@@ -65,61 +65,61 @@ class SettingsPage extends AbstractController
         // Adds the settings *section*
         // reference https://developer.wordpress.org/reference/functions/add_settings_section/
         add_settings_section(
-            GLOBAL_PRCF_NAME.'_options_section',  // Unique ID for the section
-            'PRCF Plugin settings',      // Title for the section
+            GLOBAL_CFO_NAME.'_options_section',  // Unique ID for the section
+            'CFO Plugin settings',      // Title for the section
             [$this, 'renderSectionIntro'],   // Callable function to echo the intro
-            GLOBAL_PRCF_NAME.'settings-page'      // the page this section appears on (defined in registerPage above)
+            GLOBAL_CFO_NAME.'settings-page'      // the page this section appears on (defined in registerPage above)
         );
 
         // This adds the html field that renders the setting
         // reference https://developer.wordpress.org/reference/functions/add_settings_field/
         add_settings_field(
-            GLOBAL_PRCF_NAME.'_enableCF',   // id="" value
+            GLOBAL_CFO_NAME.'_enableCF',   // id="" value
             'Whether to enable CF',          // <label> vale
             [$this, 'renderField'],          // callback to actually do the rendering of the input
-            GLOBAL_PRCF_NAME.'settings-page',     // Slug of the page to show this on (defined in registerPage above)
-            GLOBAL_PRCF_NAME.'_options_section',  // slug of the section the field appears in
+            GLOBAL_CFO_NAME.'settings-page',     // Slug of the page to show this on (defined in registerPage above)
+            GLOBAL_CFO_NAME.'_options_section',  // slug of the section the field appears in
             [                                       // array of values to pass to the render callback
-                'id' => GLOBAL_PRCF_NAME.'_enableCF',
+                'id' => GLOBAL_CFO_NAME.'_enableCF',
                 'type' => 'checkbox'
             ]
         );
         add_settings_field(
-            GLOBAL_PRCF_NAME.'_tokenCF',   // id="" value
+            GLOBAL_CFO_NAME.'_tokenCF',   // id="" value
             'CF token api',          // <label> vale
             [$this, 'renderField'],          // callback to actually do the rendering of the input
-            GLOBAL_PRCF_NAME.'settings-page',     // Slug of the page to show this on (defined in registerPage above)
-            GLOBAL_PRCF_NAME.'_options_section',  // slug of the section the field appears in
+            GLOBAL_CFO_NAME.'settings-page',     // Slug of the page to show this on (defined in registerPage above)
+            GLOBAL_CFO_NAME.'_options_section',  // slug of the section the field appears in
             [                                       // array of values to pass to the render callback
-                'id' => GLOBAL_PRCF_NAME.'_tokenCF',
+                'id' => GLOBAL_CFO_NAME.'_tokenCF',
                 'type' => 'text'
             ]
         );
         add_settings_field(
-            GLOBAL_PRCF_NAME.'_zoneID',   // id="" value
+            GLOBAL_CFO_NAME.'_zoneID',   // id="" value
             'zone ID for API',          // <label> vale
             [$this, 'renderField'],          // callback to actually do the rendering of the input
-            GLOBAL_PRCF_NAME.'settings-page',     // Slug of the page to show this on (defined in registerPage above)
-            GLOBAL_PRCF_NAME.'_options_section',  // slug of the section the field appears in
+            GLOBAL_CFO_NAME.'settings-page',     // Slug of the page to show this on (defined in registerPage above)
+            GLOBAL_CFO_NAME.'_options_section',  // slug of the section the field appears in
             [                                       // array of values to pass to the render callback
-                'id' => GLOBAL_PRCF_NAME.'_zoneID',
+                'id' => GLOBAL_CFO_NAME.'_zoneID',
                 'type' => 'text'
             ]
         );
 
         // AWS Logging Settings Section
         add_settings_section(
-            GLOBAL_PRCF_NAME.'_options_section_aws',
+            GLOBAL_CFO_NAME.'_options_section_aws',
             'AWS Logging settings',
             [$this, 'renderSectionIntro'],
-            GLOBAL_PRCF_NAME.'settings-page'
+            GLOBAL_CFO_NAME.'settings-page'
         );
 
         // Option to enable AWS Logging
-        add_option(GLOBAL_PRCF_NAME.'_log_aws_enable');
+        add_option(GLOBAL_CFO_NAME.'_log_aws_enable');
         register_setting(
-            GLOBAL_PRCF_NAME.'_options',
-            GLOBAL_PRCF_NAME.'_log_aws_enable',
+            GLOBAL_CFO_NAME.'_options',
+            GLOBAL_CFO_NAME.'_log_aws_enable',
             [
                 'type' => 'number',
                 'description' => 'Whether or not to enable AWS Logging',
@@ -129,22 +129,22 @@ class SettingsPage extends AbstractController
             ]
         );
         add_settings_field(
-            GLOBAL_PRCF_NAME.'_log_aws_enable',
+            GLOBAL_CFO_NAME.'_log_aws_enable',
             'Whether to enable Aws Logging',
             [$this, 'renderField'],
-            GLOBAL_PRCF_NAME.'settings-page',
-            GLOBAL_PRCF_NAME.'_options_section_aws',
+            GLOBAL_CFO_NAME.'settings-page',
+            GLOBAL_CFO_NAME.'_options_section_aws',
             [
-                'id' => GLOBAL_PRCF_NAME.'_log_aws_enable',
+                'id' => GLOBAL_CFO_NAME.'_log_aws_enable',
                 'type' => 'checkbox'
             ]
         );
 
         // Option to set the AWS Secret Key
-        add_option(GLOBAL_PRCF_NAME.'_log_aws_secret');
+        add_option(GLOBAL_CFO_NAME.'_log_aws_secret');
         register_setting(
-            GLOBAL_PRCF_NAME.'_options',
-            GLOBAL_PRCF_NAME.'_log_aws_secret',
+            GLOBAL_CFO_NAME.'_options',
+            GLOBAL_CFO_NAME.'_log_aws_secret',
             [
                 'type' => 'text',
                 'description' => 'AWS Secret Key',
@@ -154,23 +154,23 @@ class SettingsPage extends AbstractController
             ]
         );
         add_settings_field(
-            GLOBAL_PRCF_NAME.'_log_aws_secret',
+            GLOBAL_CFO_NAME.'_log_aws_secret',
             'Aws Secret Key',
             [$this, 'renderField'],
-            GLOBAL_PRCF_NAME.'settings-page',
-            GLOBAL_PRCF_NAME.'_options_section_aws',
+            GLOBAL_CFO_NAME.'settings-page',
+            GLOBAL_CFO_NAME.'_options_section_aws',
             [
-                'id' => GLOBAL_PRCF_NAME.'_log_aws_secret',
+                'id' => GLOBAL_CFO_NAME.'_log_aws_secret',
                 'type' => 'text'
             ]
         );
 
 
         // Option to set the AWS Access Key
-        add_option(GLOBAL_PRCF_NAME.'_log_aws_access');
+        add_option(GLOBAL_CFO_NAME.'_log_aws_access');
         register_setting(
-            GLOBAL_PRCF_NAME.'_options',
-            GLOBAL_PRCF_NAME.'_log_aws_access',
+            GLOBAL_CFO_NAME.'_options',
+            GLOBAL_CFO_NAME.'_log_aws_access',
             [
                 'type' => 'text',
                 'description' => 'AWS Access Key',
@@ -180,22 +180,22 @@ class SettingsPage extends AbstractController
             ]
         );
         add_settings_field(
-            GLOBAL_PRCF_NAME.'_log_aws_access',
+            GLOBAL_CFO_NAME.'_log_aws_access',
             'AWS Access Key',
             [$this, 'renderField'],
-            GLOBAL_PRCF_NAME.'settings-page',
-            GLOBAL_PRCF_NAME.'_options_section_aws',
+            GLOBAL_CFO_NAME.'settings-page',
+            GLOBAL_CFO_NAME.'_options_section_aws',
             [
-                'id' => GLOBAL_PRCF_NAME.'_log_aws_access',
+                'id' => GLOBAL_CFO_NAME.'_log_aws_access',
                 'type' => 'text'
             ]
         );
 
         // Option to set the AWS Region
-        add_option(GLOBAL_PRCF_NAME.'_log_aws_region');
+        add_option(GLOBAL_CFO_NAME.'_log_aws_region');
         register_setting(
-            GLOBAL_PRCF_NAME.'_options',
-            GLOBAL_PRCF_NAME.'_log_aws_region',
+            GLOBAL_CFO_NAME.'_options',
+            GLOBAL_CFO_NAME.'_log_aws_region',
             [
                 'type' => 'text',
                 'description' => 'AWS Region',
@@ -205,22 +205,22 @@ class SettingsPage extends AbstractController
             ]
         );
         add_settings_field(
-            GLOBAL_PRCF_NAME.'_log_aws_region',
+            GLOBAL_CFO_NAME.'_log_aws_region',
             'AWS Region',
             [$this, 'renderField'],
-            GLOBAL_PRCF_NAME.'settings-page',
-            GLOBAL_PRCF_NAME.'_options_section_aws',
+            GLOBAL_CFO_NAME.'settings-page',
+            GLOBAL_CFO_NAME.'_options_section_aws',
             [
-                'id' => GLOBAL_PRCF_NAME.'_log_aws_region',
+                'id' => GLOBAL_CFO_NAME.'_log_aws_region',
                 'type' => 'text'
             ]
         );
 
         // Option to set the AWS Log Group
-        add_option(GLOBAL_PRCF_NAME.'_log_aws_loggroup');
+        add_option(GLOBAL_CFO_NAME.'_log_aws_loggroup');
         register_setting(
-            GLOBAL_PRCF_NAME.'_options',
-            GLOBAL_PRCF_NAME.'_log_aws_loggroup',
+            GLOBAL_CFO_NAME.'_options',
+            GLOBAL_CFO_NAME.'_log_aws_loggroup',
             [
                 'type' => 'text',
                 'description' => 'AWS Log Group',
@@ -230,13 +230,13 @@ class SettingsPage extends AbstractController
             ]
         );
         add_settings_field(
-            GLOBAL_PRCF_NAME.'_log_aws_loggroup',
+            GLOBAL_CFO_NAME.'_log_aws_loggroup',
             'AWS Log Group',
             [$this, 'renderField'],
-            GLOBAL_PRCF_NAME.'settings-page',
-            GLOBAL_PRCF_NAME.'_options_section_aws',
+            GLOBAL_CFO_NAME.'settings-page',
+            GLOBAL_CFO_NAME.'_options_section_aws',
             [
-                'id' => GLOBAL_PRCF_NAME.'_log_aws_loggroup',
+                'id' => GLOBAL_CFO_NAME.'_log_aws_loggroup',
                 'type' => 'text'
             ]
         );
@@ -244,7 +244,7 @@ class SettingsPage extends AbstractController
 
     public function renderSectionIntro()
     {
-        echo __('PRCF Plugin settings :', GLOBAL_PRCF_NAME);
+        echo __('CFO Plugin settings :', GLOBAL_CFO_NAME);
     }
 
     public function renderField($fieldParameters)

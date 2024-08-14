@@ -1,6 +1,6 @@
 <?php
 
-namespace GlobalPrcf;
+namespace GlobalCfo;
 
 /**
  * The plugin bootstrap file
@@ -12,18 +12,18 @@ namespace GlobalPrcf;
  *
  * @link              https://totalonion.com
  * @since             1.0.0
- * @package           GlobalPrcf
+ * @package           GlobalCfo
  *
  * @wordpress-plugin
- * Plugin Name:       Global PRCF
- * Plugin URI:        https://github.com/irishdistillers/global-plugin-prcf
+ * Plugin Name:       Global CFO
+ * Plugin URI:        https://github.com/irishdistillers/global-plugin-cfo
  * Description:       A basic plugin structure for you to expand upon.
  * Version:           2.0.0
  * Author:            Johann Biteghe
  * Author URI:        https://totalonion.com
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       global-prcf
+ * Text Domain:       global-cfo
  * Domain Path:       /languages
  */
 
@@ -37,19 +37,19 @@ if (!defined('WPINC')) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define('GLOBAL_PRCF_VERSION', '2.0.0');
-define('GLOBAL_PRCF_NAME', 'global-prcf');
-define('GLOBAL_PRCF_NAMESPACE', 'GlobalPrcf');
-define('GLOBAL_PRCF_PLUGIN_FOLDER', __DIR__);
-define('GLOBAL_PRCF_PLUGIN_URL', plugin_dir_url(__FILE__));
+define('GLOBAL_CFO_VERSION', '2.0.0');
+define('GLOBAL_CFO_NAME', 'global-cfo');
+define('GLOBAL_CFO_NAMESPACE', 'GlobalCfo');
+define('GLOBAL_CFO_PLUGIN_FOLDER', __DIR__);
+define('GLOBAL_CFO_PLUGIN_URL', plugin_dir_url(__FILE__));
 
 // Autoloaders
-require_once GLOBAL_PRCF_PLUGIN_FOLDER . '/autoload.php';
-// require_once GLOBAL_PRCF_PLUGIN_FOLDER . '/vendor/autoload.php';
+require_once GLOBAL_CFO_PLUGIN_FOLDER . '/autoload.php';
+// require_once GLOBAL_CFO_PLUGIN_FOLDER . '/vendor/autoload.php';
 
 // Activate and deactivation hooks
-register_activation_hook(__FILE__, ['\GlobalPrcf\Core\Activator', 'activate']);
-register_deactivation_hook(__FILE__, ['\GlobalPrcf\Core\Deactivator', 'deactivate']);
+register_activation_hook(__FILE__, ['\GlobalCfo\Core\Activator', 'activate']);
+register_deactivation_hook(__FILE__, ['\GlobalCfo\Core\Deactivator', 'deactivate']);
 
 /**
  * Begins execution of the plugin.
@@ -60,13 +60,13 @@ register_deactivation_hook(__FILE__, ['\GlobalPrcf\Core\Deactivator', 'deactivat
  *
  * @since    1.0.0
  */
-function globalPrcfStart()
+function globalCfoStart()
 {
     try {
-        $plugin = new GlobalPrcf();
+        $plugin = new GlobalCfo();
         $plugin->run();
     } catch (\Exception $e) {
         print_r($e->getTrace());
     }
 }
-globalPrcfStart();
+globalCfoStart();

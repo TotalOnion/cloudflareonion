@@ -1,6 +1,6 @@
 <?php
 
-namespace GlobalPrcf\Core;
+namespace GlobalCfo\Core;
 
 /**
  * Register all actions and filters for the plugin
@@ -8,8 +8,8 @@ namespace GlobalPrcf\Core;
  * @link       https://totalonion.com
  * @since      1.0.0
  *
- * @package    GlobalPrcf
- * @subpackage GlobalPrcf/Core
+ * @package    GlobalCfo
+ * @subpackage GlobalCfo/Core
  */
 
 /**
@@ -19,8 +19,8 @@ namespace GlobalPrcf\Core;
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @package    GlobalPrcf
- * @subpackage GlobalPrcf/Core
+ * @package    GlobalCfo
+ * @subpackage GlobalCfo/Core
  * @author     Johann Biteghe <johann@totalonion.com>
  */
 class Loader

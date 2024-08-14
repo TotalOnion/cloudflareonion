@@ -1,11 +1,11 @@
 <?php
 
-namespace GlobalPrcf\Controllers\Admin;
+namespace GlobalCfo\Controllers\Admin;
 
-use GlobalPrcf\Controllers\AbstractController;
-use GlobalPrcf\Controllers\Admin\Logger;
+use GlobalCfo\Controllers\AbstractController;
+use GlobalCfo\Controllers\Admin\Logger;
 
-class PrcfManager extends AbstractController
+class CfoManager extends AbstractController
 {
     public function registerSave($postID)
     {
@@ -33,16 +33,16 @@ class PrcfManager extends AbstractController
             'method' => 'POST',
             'data_format' => 'body',
         ]);
-        $logger = new Logger(GLOBAL_PRCF_VERSION, GLOBAL_PRCF_NAME);
+        $logger = new Logger(GLOBAL_CFO_VERSION, GLOBAL_CFO_NAME);
         $logger->logToAws('Purging cache for ' . $postUrl );
         $logger->logToAws($response['body']);
     }
     private function getAPIKey(): string
     {
-        return get_option(GLOBAL_PRCF_NAME.'_tokenCF');
+        return get_option(GLOBAL_CFO_NAME.'_tokenCF');
     }
     private function getZoneID(): string
     {
-        return get_option(GLOBAL_PRCF_NAME.'_zoneID');
+        return get_option(GLOBAL_CFO_NAME.'_zoneID');
     }
 }

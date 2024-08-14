@@ -1,6 +1,6 @@
 <?php
 
-namespace GlobalPrcf\Core;
+namespace GlobalCfo\Core;
 
 /**
  * Define the internationalization functionality
@@ -11,8 +11,8 @@ namespace GlobalPrcf\Core;
  * @link       https://totalonion.com
  * @since      1.0.0
  *
- * @package    GlobalPrcf
- * @subpackage GlobalPrcf/Core
+ * @package    GlobalCfo
+ * @subpackage GlobalCfo/Core
  */
 
 /**
@@ -22,8 +22,8 @@ namespace GlobalPrcf\Core;
  * so that it is ready for translation.
  *
  * @since      1.0.0
- * @package    GlobalPrcf
- * @subpackage GlobalPrcf/Core
+ * @package    GlobalCfo
+ * @subpackage GlobalCfo/Core
  * @author     Johann Biteghe <johann@totalonion.com>
  */
 class I18n
@@ -36,9 +36,9 @@ class I18n
     public function loadPluginTextdomain()
     {
         load_plugin_textdomain(
-            'global-prcf',
+            'global-cfo',
             false,
-            dirname(GLOBAL_PRCF_PLUGIN_FOLDER . '/languages/')
+            dirname(GLOBAL_CFO_PLUGIN_FOLDER . '/languages/')
         );
     }
 }

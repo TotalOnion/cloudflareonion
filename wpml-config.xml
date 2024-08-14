@@ -1,5 +1,5 @@
 <wpml-config>
     <custom-types>
-        <custom-type translate="1" display-as-translated="1">prcf</custom-type>
+        <custom-type translate="1" display-as-translated="1">cfo</custom-type>
     </custom-types>
 </wpml-config>

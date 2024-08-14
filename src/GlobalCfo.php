@@ -1,10 +1,10 @@
 <?php
 
-namespace GlobalPrcf;
+namespace GlobalCfo;
 
-use GlobalPrcf\Core;
-use GlobalPrcf\Controllers\Admin;
-use GlobalPrcf\Controllers\Frontend;
+use GlobalCfo\Core;
+use GlobalCfo\Controllers\Admin;
+use GlobalCfo\Controllers\Frontend;
 
 /**
  * The core plugin class.
@@ -16,10 +16,10 @@ use GlobalPrcf\Controllers\Frontend;
  * version of the plugin.
  *
  * @since      1.0.0
- * @package    GlobalPrcf
+ * @package    GlobalCfo
  * @author     Johann Biteghe <johann@totalonion.com>
  */
-class GlobalPrcf {
+class GlobalCfo {
 
     /**
      * The loader that's responsible for maintaining and registering all hooks that power
@@ -27,7 +27,7 @@ class GlobalPrcf {
      *
      * @since    1.0.0
      * @access   protected
-     * @var      GlobalPrcf\Core\Loader    $loader    Maintains and registers all hooks for the plugin.
+     * @var      GlobalCfo\Core\Loader    $loader    Maintains and registers all hooks for the plugin.
      */
     protected $loader;
 
@@ -59,8 +59,8 @@ class GlobalPrcf {
      * @since    1.0.0
      */
     public function __construct() {
-        $this->version = GLOBAL_PRCF_VERSION;
-        $this->pluginName = GLOBAL_PRCF_NAME;
+        $this->version = GLOBAL_CFO_VERSION;
+        $this->pluginName = GLOBAL_CFO_NAME;
 
         $this->loader = new Core\Loader();
         $this->setLocale();
@@ -71,7 +71,7 @@ class GlobalPrcf {
     /**
      * Define the locale for this plugin for internationalization.
      *
-     * Uses the GlobalPrcf\Core\Internationalisation class in order to set the domain and to register the hook
+     * Uses the GlobalCfo\Core\Internationalisation class in order to set the domain and to register the hook
      * with WordPress.
      *
      * @since    1.0.0
@@ -99,8 +99,8 @@ class GlobalPrcf {
         $this->loader->addAction('admin_init', $settingsPage, 'registerSettings');
         
         // Add the forms post type etc
-        $prcfManager = new Admin\PrcfManager($this->getPluginName(), $this->getVersion());
-        $this->loader->addAction('save_post', $prcfManager, 'registerSave');
+        $cfoManager = new Admin\CfoManager($this->getPluginName(), $this->getVersion());
+        $this->loader->addAction('save_post', $cfoManager, 'registerSave');
 
         // Enqueue scripts
         $enqueue = new Frontend\Enqueue($this->getPluginName(), $this->getVersion());
@@ -147,7 +147,7 @@ class GlobalPrcf {
      * The reference to the class that orchestrates the hooks with the plugin.
      *
      * @since     1.0.0
-     * @return    GlobalPrcf\Core\Loader    Orchestrates the hooks of the plugin.
+     * @return    GlobalCfo\Core\Loader    Orchestrates the hooks of the plugin.
      */
     public function getLoader()
     {

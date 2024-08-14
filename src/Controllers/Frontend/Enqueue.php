@@ -1,8 +1,8 @@
 <?php
 
-namespace GlobalPrcf\Controllers\Frontend;
+namespace GlobalCfo\Controllers\Frontend;
 
-use GlobalPrcf\Controllers\AbstractController;
+use GlobalCfo\Controllers\AbstractController;
 
 class Enqueue extends AbstractController
 {
@@ -10,7 +10,7 @@ class Enqueue extends AbstractController
     {
         wp_enqueue_script(
             $this->pluginName.'_main',
-            GLOBAL_PRCF_PLUGIN_URL.'src/Resources/js/public.js',
+            GLOBAL_CFO_PLUGIN_URL.'src/Resources/js/public.js',
             [],
             $this->version,
             true

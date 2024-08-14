@@ -21,7 +21,7 @@
  *
  * @link       https://totalonion.com
  * @since      1.0.0
- * @package    GlobalPrcf
+ * @package    GlobalCfo
  */
 
 // If uninstall not called from WordPress, then exit.

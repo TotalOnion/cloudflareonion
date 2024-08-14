@@ -1,5 +1,5 @@
 {
-    "name": "irishdistillers/global-plugin-prcf",
+    "name": "irishdistillers/global-plugin-cfo",
     "description": "CloudFlare things",
     "type": "wordpress-plugin",
     "repositories": [
@@ -10,7 +10,7 @@
     ],
     "autoload" : {
         "psr-4": {
-            "global-plugin-prcf\\": "./"
+            "global-plugin-cfo\\": "./"
         }
     },
     "require": {
