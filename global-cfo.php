@@ -16,8 +16,8 @@ namespace GlobalCfo;
  *
  * @wordpress-plugin
  * Plugin Name:       Global CFO
- * Plugin URI:        https://github.com/irishdistillers/global-plugin-cfo
- * Description:       A basic plugin structure for you to expand upon.
+ * Plugin URI:        https://github.com/TotalOnion/cloudflareonion
+ * Description:       Cloudflare cache handling plugin
  * Version:           2.0.0
  * Author:            Johann Biteghe
  * Author URI:        https://totalonion.com
