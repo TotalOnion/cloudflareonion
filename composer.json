@@ -1,5 +1,5 @@
 {
-    "name": "irishdistillers/global-plugin-cfo",
+    "name": "totalonion/global-plugin-cfo",
     "description": "CloudFlare things",
     "type": "wordpress-plugin",
     "repositories": [
