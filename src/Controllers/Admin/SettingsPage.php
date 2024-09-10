@@ -45,7 +45,7 @@ class SettingsPage extends AbstractController
             [
                 'type' => 'text',
                 'description' => 'CF token for API calls',
-                'sanitize_callback' => 'sanitize_text_field',
+                'sanitize_callback' => 'cfoEncryptInput',
                 'show_in_rest' => true,
                 'default' => ''
             ]
@@ -148,7 +148,7 @@ class SettingsPage extends AbstractController
             [
                 'type' => 'text',
                 'description' => 'AWS Secret Key',
-                'sanitize_callback' => 'sanitize_text_field',
+                'sanitize_callback' => 'cfoEncryptInput',
                 'show_in_rest' => true,
                 'default' => ''
             ]
@@ -174,7 +174,7 @@ class SettingsPage extends AbstractController
             [
                 'type' => 'text',
                 'description' => 'AWS Access Key',
-                'sanitize_callback' => 'sanitize_text_field',
+                'sanitize_callback' => 'cfoEncryptInput',
                 'show_in_rest' => true,
                 'default' => ''
             ]

@@ -8,12 +8,13 @@ class Logger extends AbstractController
 {
     private string $amzDate;
     private string $dateStamp;
-    private string $accessKey;
-    private string $secretKey;
-    private string $region;
-    private string $host;
-    private string $endpoint;
-    private string $logGroup;
+    private ?string $accessKey;
+    private ?string $secretKey;
+    private ?string $region;
+    private ?string $host;
+    private ?string $endpoint;
+    private ?string $logGroup;
+    private ?bool $loggingEnabled;
 
     public function __construct()
     {
@@ -24,9 +25,10 @@ class Logger extends AbstractController
         $this->setHost();
         $this->setEndpoint();
         $this->setLogGroup();
+        $this->setLoggingEnabled();
     }
 
-    public function logToAws($logLine): void
+    public function logToAws($logLine): array
     {
         $requestParameters = json_encode(['logGroupName' => $this->logGroup]);
 
@@ -49,7 +51,7 @@ class Logger extends AbstractController
             ],
         ]);
 
-        $reponses = [];
+        $responses = [];
         // Create log group
         $responses[] = $this->sendRequest('Logs_20140328.CreateLogGroup', $requestParameters);
 
@@ -58,6 +60,8 @@ class Logger extends AbstractController
 
         // Put log event
         $responses[] = $this->sendRequest('Logs_20140328.PutLogEvents', $requestParametersEvent);
+
+        return $responses;
     }
 
     private function sendRequest($amzTarget, $requestParameters): array
@@ -121,12 +125,12 @@ class Logger extends AbstractController
 
     private function setAccessKey(): void
     {
-        $this->accessKey = get_option(GLOBAL_CFO_NAME.'_log_aws_access');
+        $this->accessKey = cfoDecryptInput(get_option(GLOBAL_CFO_NAME.'_log_aws_access'));
     }
 
     private function setSecretKey(): void
     {
-        $this->secretKey = get_option(GLOBAL_CFO_NAME.'_log_aws_secret');
+        $this->secretKey = cfoDecryptInput(get_option(GLOBAL_CFO_NAME.'_log_aws_secret'));
     }
 
     private function setRegion(): void
@@ -147,5 +151,15 @@ class Logger extends AbstractController
     private function setEndpoint(): void
     {
         $this->endpoint = 'https://' . $this->host;
+    }
+
+    private function setLoggingEnabled(): void
+    {
+        $this->loggingEnabled = get_option(GLOBAL_CFO_NAME.'_log_aws_enable');
+    }
+
+    private function getLoggingEnabled(): bool
+    {
+        return $this->loggingEnabled;
     }
 }
