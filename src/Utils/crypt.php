@@ -1,6 +1,10 @@
 <?php
 
 function cfoGetKey() {
+    if (defined('SECURE_AUTH_SALT')) {
+        return SECURE_AUTH_SALT;
+    }
+    
     $key = get_option(GLOBAL_CFO_NAME.'_encrypt_key');
     if(!$key) {
         $key = openssl_random_pseudo_bytes(10);
