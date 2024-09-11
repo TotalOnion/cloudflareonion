@@ -1,10 +1,10 @@
 <?php
 
-function cfoGetKey() {
+function cfoGetSalt() {
     if (defined('SECURE_AUTH_SALT')) {
         return SECURE_AUTH_SALT;
     }
-    
+
     $key = get_option(GLOBAL_CFO_NAME.'_encrypt_key');
     if(!$key) {
         $key = openssl_random_pseudo_bytes(10);
@@ -13,7 +13,7 @@ function cfoGetKey() {
     return $key;
 }
 
-function cfoGetIV() {
+function cfoGetInitVector() {
     $iv = get_option(GLOBAL_CFO_NAME.'_encrypt_iv');
     if(!$iv) {
         $ivlen = openssl_cipher_iv_length('aes-256-cbc');
@@ -25,16 +25,16 @@ function cfoGetIV() {
 
 function cfoEncryptInput($input) {
     $sanitizedInput = sanitize_text_field($input);
-    $key = cfoGetKey();
-    $iv = cfoGetIV();
+    $salt = cfoGetSalt();
+    $iv = cfoGetInitVector();
 
-    $encryptedInput = openssl_encrypt($sanitizedInput, 'aes-256-cbc', $key, 0, $iv);
+    $encryptedInput = openssl_encrypt($sanitizedInput, 'aes-256-cbc', $salt, 0, $iv);
     return $encryptedInput;
 }
 
 function cfoDecryptInput($encryptedValue) {
-    $key = cfoGetKey();
-    $iv = cfoGetIV();
-    $decryptedValue = openssl_decrypt($encryptedValue, 'aes-256-cbc', $key, 0, $iv);
+    $salt = cfoGetSalt();
+    $iv = cfoGetInitVector();
+    $decryptedValue = openssl_decrypt($encryptedValue, 'aes-256-cbc', $salt, 0, $iv);
     return $decryptedValue;
 }
