@@ -14,6 +14,10 @@ function cfoGetSalt() {
 }
 
 function cfoGetInitVector() {
+    if (defined('AUTH_SALT')) {
+        return AUTH_SALT;
+    }
+
     $iv = get_option(GLOBAL_CFO_NAME.'_encrypt_iv');
     if(!$iv) {
         $ivlen = openssl_cipher_iv_length('aes-256-cbc');
