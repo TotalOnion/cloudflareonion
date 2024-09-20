@@ -1,5 +1,4 @@
 <?php
-
 namespace GlobalCfo\Controllers\Admin;
 
 use GlobalCfo\Controllers\AbstractController;
@@ -17,32 +16,35 @@ class CfoManager extends AbstractController
 
     public function registerSave($postID)
     {
-        $this->logger->logToAws('a save has been triggered');
         if (wp_is_post_revision($postID) || wp_is_post_autosave($postID) || !$this->getCFEnabled()) {
             return;
         }
-        $this->purgeCache($postID);
+
+        $postUrl = get_permalink($postID);
+        $this->sendPurgeRequest($postUrl);
+
+        if ($this->getTrailingSlashOption()) {
+            $this->sendPurgeRequest(rtrim($postUrl, '/'));
+        }
     }
 
-    private function purgeCache($postID): void
+    private function sendPurgeRequest($postUrl): void
     {
-        $url = 'https://api.cloudflare.com/client/v4/zones/' . $this->getZoneID() . '/purge_cache';
-        $postUrl = get_permalink($postID);
+        $endpointUrl = $this->getPurgeEndpoint();
         $headers = [
             'Content-Type' => 'application/json',
             'Authorization' => 'Bearer ' . $this->getAPIKey(),
         ];
-        // $body = json_encode(['tags' => $cacheTags]);
         $body = json_encode([
             'files' => [$postUrl]
         ]);
-        $response = wp_remote_post($url, [
+        $this->logger->logToAws('Purging cache for ' . $postUrl);
+        $response = wp_remote_post($endpointUrl, [
             'headers' => $headers,
             'body' => $body,
             'method' => 'POST',
             'data_format' => 'body',
         ]);
-        $this->logger->logToAws('Purging cache for ' . $postUrl );
         $this->logger->logToAws($response['body']);
     }
 
@@ -59,5 +61,15 @@ class CfoManager extends AbstractController
     private function getCFEnabled(): string
     {
         return get_option(GLOBAL_CFO_NAME.'_enableCF');
+    }
+
+    private function getTrailingSlashOption(): string
+    {
+        return get_option(GLOBAL_CFO_NAME.'_purgeNoTrailingSlash');
+    }
+
+    private function getPurgeEndpoint(): string
+    {
+       return 'https://api.cloudflare.com/client/v4/zones/' . $this->getZoneID() . '/purge_cache';
     }
 }

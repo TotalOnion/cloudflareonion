@@ -43,7 +43,7 @@ class SettingsPage extends AbstractController
             GLOBAL_CFO_NAME.'_options',
             GLOBAL_CFO_NAME.'_tokenCF',
             [
-                'type' => 'text',
+                'type' => 'obfuscatedtext',
                 'description' => 'CF token for API calls',
                 'sanitize_callback' => 'cfoEncryptInput',
                 'show_in_rest' => true,
@@ -92,7 +92,7 @@ class SettingsPage extends AbstractController
             GLOBAL_CFO_NAME.'_options_section',  // slug of the section the field appears in
             [                                       // array of values to pass to the render callback
                 'id' => GLOBAL_CFO_NAME.'_tokenCF',
-                'type' => 'text'
+                'type' => 'obfuscatedtext'
             ]
         );
         add_settings_field(
@@ -146,7 +146,7 @@ class SettingsPage extends AbstractController
             GLOBAL_CFO_NAME.'_options',
             GLOBAL_CFO_NAME.'_log_aws_secret',
             [
-                'type' => 'text',
+                'type' => 'obfuscatedtext',
                 'description' => 'AWS Secret Key',
                 'sanitize_callback' => 'cfoEncryptInput',
                 'show_in_rest' => true,
@@ -161,7 +161,7 @@ class SettingsPage extends AbstractController
             GLOBAL_CFO_NAME.'_options_section_aws',
             [
                 'id' => GLOBAL_CFO_NAME.'_log_aws_secret',
-                'type' => 'text'
+                'type' => 'obfuscatedtext'
             ]
         );
 
@@ -172,7 +172,7 @@ class SettingsPage extends AbstractController
             GLOBAL_CFO_NAME.'_options',
             GLOBAL_CFO_NAME.'_log_aws_access',
             [
-                'type' => 'text',
+                'type' => 'obfuscatedtext',
                 'description' => 'AWS Access Key',
                 'sanitize_callback' => 'cfoEncryptInput',
                 'show_in_rest' => true,
@@ -187,7 +187,7 @@ class SettingsPage extends AbstractController
             GLOBAL_CFO_NAME.'_options_section_aws',
             [
                 'id' => GLOBAL_CFO_NAME.'_log_aws_access',
-                'type' => 'text'
+                'type' => 'obfuscatedtext'
             ]
         );
 
@@ -238,6 +238,30 @@ class SettingsPage extends AbstractController
             [
                 'id' => GLOBAL_CFO_NAME.'_log_aws_loggroup',
                 'type' => 'text'
+            ]
+        );
+
+        add_option(GLOBAL_CFO_NAME.'_purgeNoTrailingSlash');
+        register_setting(
+            GLOBAL_CFO_NAME.'_options',
+            GLOBAL_CFO_NAME.'_purgeNoTrailingSlash',
+            [
+                'type' => 'number',
+                'description' => 'Purge without trailing slash as well',
+                'sanitize_callback' => 'sanitize_text_field',
+                'show_in_rest' => true,
+                'default' => ''
+            ]
+        );
+        add_settings_field(
+            GLOBAL_CFO_NAME.'_purgeNoTrailingSlash',
+            'Purge without trailing slash as well',
+            [$this, 'renderField'],
+            GLOBAL_CFO_NAME.'settings-page',
+            GLOBAL_CFO_NAME.'_options_section',
+            [
+                'id' => GLOBAL_CFO_NAME.'_purgeNoTrailingSlash',
+                'type' => 'checkbox'
             ]
         );
     }

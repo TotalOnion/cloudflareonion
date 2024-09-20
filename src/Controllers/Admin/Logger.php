@@ -28,8 +28,12 @@ class Logger extends AbstractController
         $this->setLoggingEnabled();
     }
 
-    public function logToAws($logLine): array
+    public function logToAws($logLine): void
     {
+        if ( !$this->getLoggingEnabled() ) {
+            return;
+        }
+
         $requestParameters = json_encode(['logGroupName' => $this->logGroup]);
 
         $logStream = wp_parse_url(home_url())['host'];
@@ -61,7 +65,6 @@ class Logger extends AbstractController
         // Put log event
         $responses[] = $this->sendRequest('Logs_20140328.PutLogEvents', $requestParametersEvent);
 
-        return $responses;
     }
 
     private function sendRequest($amzTarget, $requestParameters): array
