@@ -1,0 +1,1 @@
+<input type="password" id="<?php echo $id; ?>" name="<?php echo $name; ?>" value="<?php echo cfoDecryptInput(esc_attr($currentValue)); ?>" />
