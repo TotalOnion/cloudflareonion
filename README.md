@@ -15,3 +15,6 @@ An example shortcode, and `wp-json` endpoint have been added.
 
 >[!IMPORTANT]
 >This requires both ACF and WPML to work
+
+# Doc(s)
+- [ Manipulate the plugin via Terminus ](https://pernod-ricard.atlassian.net/wiki/spaces/IR/pages/30078019394/03_Terminus+Important+commands#Plugin-management-via-Terminus)
