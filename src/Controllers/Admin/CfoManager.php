@@ -20,6 +20,14 @@ class CfoManager extends AbstractController
             return;
         }
 
+        $postType = get_post_type($postID);
+        $postTypesToPurge = $this->getPostTypesOption();
+
+        // Skipping purge for post types not in the list
+        if (!in_array($postType, $postTypesToPurge)) {
+            return;
+        }
+
         $postUrl = get_permalink($postID);
         $this->sendPurgeRequest($postUrl);
 
@@ -66,6 +74,11 @@ class CfoManager extends AbstractController
     private function getTrailingSlashOption(): string
     {
         return get_option(GLOBAL_CFO_NAME.'_purgeNoTrailingSlash');
+    }
+
+    private function getPostTypesOption(): array
+    {
+        return get_option(GLOBAL_CFO_NAME.'_purgePostTypes');
     }
 
     private function getPurgeEndpoint(): string
