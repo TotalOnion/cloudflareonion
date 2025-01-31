@@ -18,7 +18,7 @@ namespace GlobalCfo;
  * Plugin Name:       Global CFO
  * Plugin URI:        https://github.com/TotalOnion/cloudflareonion
  * Description:       Cloudflare cache handling plugin
- * Version:           0.0.2
+ * Version:           0.0.4
  * Author:            Johann Biteghe
  * Author URI:        https://totalonion.com
  * License:           GPL-2.0+
@@ -37,7 +37,7 @@ if (!defined('WPINC')) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define('GLOBAL_CFO_VERSION', '0.0.2');
+define('GLOBAL_CFO_VERSION', '0.0.4');
 define('GLOBAL_CFO_NAME', 'global-cfo');
 define('GLOBAL_CFO_NAMESPACE', 'GlobalCfo');
 define('GLOBAL_CFO_PLUGIN_FOLDER', __DIR__);
@@ -46,6 +46,7 @@ define('GLOBAL_CFO_PLUGIN_URL', plugin_dir_url(__FILE__));
 // Autoloaders
 require_once GLOBAL_CFO_PLUGIN_FOLDER . '/autoload.php';
 require_once GLOBAL_CFO_PLUGIN_FOLDER . '/src/Utils/crypt.php';
+require_once GLOBAL_CFO_PLUGIN_FOLDER . '/src/Utils/functions.php';
 // require_once GLOBAL_CFO_PLUGIN_FOLDER . '/vendor/autoload.php';
 
 // Activate and deactivation hooks

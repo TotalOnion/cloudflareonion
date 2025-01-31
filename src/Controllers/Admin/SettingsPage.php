@@ -18,27 +18,22 @@ class SettingsPage extends AbstractController
         );
     }
 
-    public function registerSettings()
+    private function registerCloudFlareFields()
     {
+        // Adds the settings *section*
+        // reference https://developer.wordpress.org/reference/functions/add_settings_section/
+        add_settings_section(
+            GLOBAL_CFO_NAME.'_options_section',  // Unique ID for the section
+            'Cloudflare Settings',      // Title for the section
+            [$this, 'renderSectionIntro'],   // Callable function to echo the intro
+            GLOBAL_CFO_NAME.'settings-page'      // the page this section appears on (defined in registerPage above)
+        );
+
         // This created the option in the wp_option table
         // reference https://developer.wordpress.org/reference/functions/add_option/
-        add_option(GLOBAL_CFO_NAME.'_enableCF');
         add_option(GLOBAL_CFO_NAME.'_tokenCF');
-        add_option(GLOBAL_CFO_NAME.'_zoneID');
-
         // This marks them as a setting you can edit in the admin
         // reference https://developer.wordpress.org/reference/functions/register_setting/
-        register_setting(
-            GLOBAL_CFO_NAME.'_options',
-            GLOBAL_CFO_NAME.'_enableCF',
-            [
-                'type' => 'number',
-                'description' => 'Whether or not to enable CF',
-                'sanitize_callback' => 'sanitize_text_field',
-                'show_in_rest' => true,
-                'default' => ''
-            ]
-        );
         register_setting(
             GLOBAL_CFO_NAME.'_options',
             GLOBAL_CFO_NAME.'_tokenCF',
@@ -50,40 +45,8 @@ class SettingsPage extends AbstractController
                 'default' => ''
             ]
         );
-        register_setting(
-            GLOBAL_CFO_NAME.'_options',
-            GLOBAL_CFO_NAME.'_zoneID',
-            [
-                'type' => 'text',
-                'description' => 'zone ID',
-                'sanitize_callback' => 'sanitize_text_field',
-                'show_in_rest' => true,
-                'default' => ''
-            ]
-        );
-
-        // Adds the settings *section*
-        // reference https://developer.wordpress.org/reference/functions/add_settings_section/
-        add_settings_section(
-            GLOBAL_CFO_NAME.'_options_section',  // Unique ID for the section
-            'CFO Plugin settings',      // Title for the section
-            [$this, 'renderSectionIntro'],   // Callable function to echo the intro
-            GLOBAL_CFO_NAME.'settings-page'      // the page this section appears on (defined in registerPage above)
-        );
-
         // This adds the html field that renders the setting
         // reference https://developer.wordpress.org/reference/functions/add_settings_field/
-        add_settings_field(
-            GLOBAL_CFO_NAME.'_enableCF',   // id="" value
-            'Whether to enable CF',          // <label> vale
-            [$this, 'renderField'],          // callback to actually do the rendering of the input
-            GLOBAL_CFO_NAME.'settings-page',     // Slug of the page to show this on (defined in registerPage above)
-            GLOBAL_CFO_NAME.'_options_section',  // slug of the section the field appears in
-            [                                       // array of values to pass to the render callback
-                'id' => GLOBAL_CFO_NAME.'_enableCF',
-                'type' => 'checkbox'
-            ]
-        );
         add_settings_field(
             GLOBAL_CFO_NAME.'_tokenCF',   // id="" value
             'CF token api',          // <label> vale
@@ -93,6 +56,19 @@ class SettingsPage extends AbstractController
             [                                       // array of values to pass to the render callback
                 'id' => GLOBAL_CFO_NAME.'_tokenCF',
                 'type' => 'obfuscatedtext'
+            ]
+        );
+
+        add_option(GLOBAL_CFO_NAME.'_zoneID');
+        register_setting(
+            GLOBAL_CFO_NAME.'_options',
+            GLOBAL_CFO_NAME.'_zoneID',
+            [
+                'type' => 'text',
+                'description' => 'zone ID',
+                'sanitize_callback' => 'sanitize_text_field',
+                'show_in_rest' => true,
+                'default' => ''
             ]
         );
         add_settings_field(
@@ -106,7 +82,10 @@ class SettingsPage extends AbstractController
                 'type' => 'text'
             ]
         );
+    }
 
+    private function registerAWSFields()
+    {
         // AWS Logging Settings Section
         add_settings_section(
             GLOBAL_CFO_NAME.'_options_section_aws',
@@ -130,7 +109,7 @@ class SettingsPage extends AbstractController
         );
         add_settings_field(
             GLOBAL_CFO_NAME.'_log_aws_enable',
-            'Whether to enable Aws Logging',
+            'Enable Aws Logging',
             [$this, 'renderField'],
             GLOBAL_CFO_NAME.'settings-page',
             GLOBAL_CFO_NAME.'_options_section_aws',
@@ -241,6 +220,41 @@ class SettingsPage extends AbstractController
             ]
         );
 
+    }
+
+    private function registerOptionsFields()
+    {
+        add_settings_section(
+            GLOBAL_CFO_NAME.'_options_section_purge',  // Unique ID for the section
+            'Plugin Purge Settings',      // Title for the section
+            [$this, 'renderSectionIntro'],   // Callable function to echo the intro
+            GLOBAL_CFO_NAME.'settings-page'      // the page this section appears on (defined in registerPage above)
+        );
+
+        add_option(GLOBAL_CFO_NAME.'_enableCF');
+        register_setting(
+            GLOBAL_CFO_NAME.'_options',
+            GLOBAL_CFO_NAME.'_enableCF',
+            [
+                'type' => 'number',
+                'description' => 'Whether or not to enable CF',
+                'sanitize_callback' => 'sanitize_text_field',
+                'show_in_rest' => true,
+                'default' => ''
+            ]
+        );
+        add_settings_field(
+            GLOBAL_CFO_NAME.'_enableCF',   // id="" value
+            'Enable CF purging',          // <label> vale
+            [$this, 'renderField'],          // callback to actually do the rendering of the input
+            GLOBAL_CFO_NAME.'settings-page',     // Slug of the page to show this on (defined in registerPage above)
+            GLOBAL_CFO_NAME.'_options_section_purge',  // slug of the section the field appears in
+            [                                       // array of values to pass to the render callback
+                'id' => GLOBAL_CFO_NAME.'_enableCF',
+                'type' => 'checkbox'
+            ]
+        );
+
         add_option(GLOBAL_CFO_NAME.'_purgeNoTrailingSlash');
         register_setting(
             GLOBAL_CFO_NAME.'_options',
@@ -258,17 +272,49 @@ class SettingsPage extends AbstractController
             'Purge without trailing slash as well',
             [$this, 'renderField'],
             GLOBAL_CFO_NAME.'settings-page',
-            GLOBAL_CFO_NAME.'_options_section',
+            GLOBAL_CFO_NAME.'_options_section_purge',
             [
                 'id' => GLOBAL_CFO_NAME.'_purgeNoTrailingSlash',
                 'type' => 'checkbox'
             ]
         );
+
+        add_option(GLOBAL_CFO_NAME.'_purgePostTypes');
+        register_setting(
+            GLOBAL_CFO_NAME.'_options',
+            GLOBAL_CFO_NAME.'_purgePostTypes',
+            [
+                'type' => 'text',
+                'description' => 'Which Post Types need to be purged',
+                'sanitize_callback' => 'cfoSanitizeMultipleChoice',
+                'show_in_rest' => true,
+                'default' => ''
+            ]
+        );
+        add_settings_field(
+            GLOBAL_CFO_NAME.'_purgePostTypes',
+            'Post types',
+            [$this, 'renderField'],
+            GLOBAL_CFO_NAME.'settings-page',
+            GLOBAL_CFO_NAME.'_options_section_purge',
+            [
+                'id' => GLOBAL_CFO_NAME.'_purgePostTypes',
+                'type' => 'multiplechoice',
+                'choices' => get_post_types()
+            ]
+        );
+    }
+
+    public function registerSettings()
+    {
+        $this->registerCloudFlareFields();
+        $this->registerAWSFields();
+        $this->registerOptionsFields();
     }
 
     public function renderSectionIntro()
     {
-        echo __('CFO Plugin settings :', GLOBAL_CFO_NAME);
+        echo __('', GLOBAL_CFO_NAME);
     }
 
     public function renderField($fieldParameters)
@@ -279,7 +325,8 @@ class SettingsPage extends AbstractController
                 'id' => $fieldParameters['id'],
                 'name' => $fieldParameters['id'],
                 'currentValue' => get_option($fieldParameters['id']) ?? '',
-                'cssClass' => $fieldParameters['cssClass'] ?? ''
+                'cssClass' => $fieldParameters['cssClass'] ?? '',
+                'choices' => $fieldParameters['choices'] ?? ''
             ]
         );
     }
