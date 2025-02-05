@@ -100,7 +100,7 @@ class GlobalCfo {
         
         // Add the forms post type etc
         $cfoManager = new Admin\CfoManager($this->getPluginName(), $this->getVersion());
-        $this->loader->addAction('save_post', $cfoManager, 'registerSave');
+        $this->loader->addAction('save_post', $cfoManager, 'registerSavedPost');
 
         // Enqueue scripts
         $enqueue = new Frontend\Enqueue($this->getPluginName(), $this->getVersion());

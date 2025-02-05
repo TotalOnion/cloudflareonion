@@ -14,7 +14,7 @@ class CfoManager extends AbstractController
         parent::__construct($pluginName, $version);
     }
 
-    public function registerSave($postID)
+    public function registerSavedPost($postID)
     {
         if (wp_is_post_revision($postID) || wp_is_post_autosave($postID) || !$this->getCFEnabled()) {
             return;
