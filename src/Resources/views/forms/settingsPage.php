@@ -1,17 +1,17 @@
 <?php
-$active_tab = isset($_GET['page']) ? $_GET['page'] : GLOBAL_CFO_NAME . 'settings-page';
+$page = isset($_GET['page']) ? $_GET['page'] : GLOBAL_CFO_NAME . 'settings-page';
 ?>
 
 <div class="wrap">
     <h2>CFO Settings</h2>
 
     <h2 class="nav-tab-wrapper">
-        <a href="?page=<?php echo GLOBAL_CFO_NAME; ?>settings-page"
-            class="nav-tab <?php echo $active_tab == 'general' ? 'nav-tab-active' : ''; ?>">
+        <a href="<?php echo admin_url('admin.php?page=' . GLOBAL_CFO_NAME . 'settings-page'); ?>"
+            class="nav-tab <?php echo $page == GLOBAL_CFO_NAME . 'settings-page' ? 'nav-tab-active' : ''; ?>">
             Page Settings
         </a>
-        <a href="?page=<?php echo GLOBAL_CFO_NAME . '_cache-clearance-page'; ?>"
-            class="nav-tab <?php echo $active_tab == 'cache-clearance' ? 'nav-tab-active' : ''; ?>">
+        <a href="<?php echo admin_url('admin.php?page=' . GLOBAL_CFO_NAME . '_cache-clearance-page'); ?>"
+            class="nav-tab <?php echo $page == GLOBAL_CFO_NAME . '_cache-clearance-page' ? 'nav-tab-active' : ''; ?>">
             Clear Cache
         </a>
     </h2>
@@ -20,7 +20,7 @@ $active_tab = isset($_GET['page']) ? $_GET['page'] : GLOBAL_CFO_NAME . 'settings
 <div class="wrap">
 
     <?php
-    if ($active_tab == GLOBAL_CFO_NAME . 'settings-page') :
+    if ($page == GLOBAL_CFO_NAME . 'settings-page') :
     ?>
 
         <h1>My Settings</h1>

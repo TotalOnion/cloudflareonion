@@ -30,5 +30,8 @@ An example shortcode, and `wp-json` endpoint have been added.
 In your local wordpress plugins folder, symlink the plugin
 ```bash
 ln -sf /My-Versions/cloudflareonion global-plugin-cfo
+
+# Inside the env if using lando !
+ln -s /My-Versions/cloudflareonion /app/web/wp-content/plugins/prcfx 
 ```
 
