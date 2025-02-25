@@ -14,7 +14,16 @@ class CfoManager extends AbstractController
         parent::__construct($pluginName, $version);
     }
 
-    public function registerSave($postID)
+    public function registerSavedItem($url)
+    {
+        $this->sendPurgeRequest($url);
+
+        if ($this->getTrailingSlashOption()) {
+            $this->sendPurgeRequest(rtrim($url, '/'));
+        }
+    }
+
+    public function registerSavedPost($postID)
     {
         if (wp_is_post_revision($postID) || wp_is_post_autosave($postID) || !$this->getCFEnabled()) {
             return;
@@ -29,11 +38,7 @@ class CfoManager extends AbstractController
         }
 
         $postUrl = get_permalink($postID);
-        $this->sendPurgeRequest($postUrl);
-
-        if ($this->getTrailingSlashOption()) {
-            $this->sendPurgeRequest(rtrim($postUrl, '/'));
-        }
+        $this->registerSavedItem($postUrl);
     }
 
     private function sendPurgeRequest($postUrl): void

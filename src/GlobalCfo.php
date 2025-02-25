@@ -98,9 +98,14 @@ class GlobalCfo {
         $this->loader->addAction('admin_menu', $settingsPage, 'registerPage');
         $this->loader->addAction('admin_init', $settingsPage, 'registerSettings');
         
+        // Add the cache page
+        $cacheClearancePage = new Admin\CacheClearancePage($this->getPluginName(), $this->getVersion());
+        $this->loader->addAction('admin_menu', $cacheClearancePage, 'registerPage');
+        $this->loader->addAction('admin_init', $cacheClearancePage, 'registerSettings');
+
         // Add the forms post type etc
         $cfoManager = new Admin\CfoManager($this->getPluginName(), $this->getVersion());
-        $this->loader->addAction('save_post', $cfoManager, 'registerSave');
+        $this->loader->addAction('save_post', $cfoManager, 'registerSavedPost');
 
         // Enqueue scripts
         $enqueue = new Frontend\Enqueue($this->getPluginName(), $this->getVersion());
