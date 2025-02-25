@@ -24,3 +24,14 @@
 
         return true;
     }
+
+    function cfoGetWPMLLanguageById($id) {
+        $market = null;
+        $languages = apply_filters( 'wpml_active_languages', NULL, 'orderby=id&order=desc' );
+        foreach ($languages as $key => $language) {
+            if ($language['id'] == $id) {
+                $market = $language;
+            }
+        }
+        return $market;
+    }
