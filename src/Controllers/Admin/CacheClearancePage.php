@@ -82,16 +82,16 @@ class CacheClearancePage extends AbstractController
 
     public function handleFormSubmission($input)
     {
-        $urls = array_filter(explode("\n", $input));
+        $paths = array_filter(explode("\n", $input));
 
-        foreach ($urls as $url) {
-            $url = trim($url);
-            if (empty($url)) continue;
+        foreach ($paths as $path) {
+            $path = trim($path);
+            if (empty($path)) continue;
 
-            if (!isValidUrlPath($url)) {
+            if (!isValidUrlPath($path)) {
                 $error = sprintf(
                     '<div class="notice notice-error"><p>Invalid PATH format: %s</p></div>',
-                    esc_html($url)
+                    esc_html($path)
                 );
 
                 add_settings_error(
@@ -104,10 +104,11 @@ class CacheClearancePage extends AbstractController
                 add_settings_error(
                     'field_path_validator',
                     'invalid_paths',
-                    "Sending '${url}' to Cloudflare for clearance",
+                    "Sending '${path}' to Cloudflare for clearance",
                     'warning'
                 );
 
+                $url = home_url($path);
                 $this->cfoManager->registerSavedItem($url);
             }
         }
