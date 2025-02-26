@@ -49,11 +49,11 @@ class CfoManager extends AbstractController
             $body = json_encode([
                 'prefixes' => [$marketURI]
             ], JSON_UNESCAPED_SLASHES);
-            $this->sendPurgeRequest($body);
+            return $this->sendPurgeRequest($body);
         }
     }
 
-    private function sendPurgeRequest($body): void
+    private function sendPurgeRequest($body): string
     {
         $endpointUrl = $this->getPurgeEndpoint();
         $headers = [
@@ -68,6 +68,7 @@ class CfoManager extends AbstractController
             'data_format' => 'body',
         ]);
         $this->logger->logToAws($response['body']);
+        return $response['body'];
     }
 
     private function getPurgeBodyUrl($url): string

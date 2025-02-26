@@ -5,7 +5,7 @@
             if ( in_array( 'sitepress-multilingual-cms/sitepress.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
                 $languages = apply_filters( 'wpml_active_languages', NULL );
                 foreach ($languages as $language) { ?>
-                    <div data-cfo-market="<?php echo $language['id']; ?>">
+                    <div data-cfo-market="<?php echo $language['id']; ?>" class="button primary">
                         <span><?php echo $language['translated_name'];?></span>
                         <img src="<?php echo $language['country_flag_url'];?>">
                     </div>
@@ -15,4 +15,5 @@
             }
         ?>
     </div>
+    <div id="cfo-purge-result"></div>
 </div>

@@ -15,6 +15,12 @@ class Enqueue extends AbstractController
             $this->version,
             true
         );
+        wp_enqueue_style(
+            $this->pluginName.'_main_css',
+            GLOBAL_CFO_PLUGIN_URL.'dist/admin.css',
+            [],
+            $this->version
+        );
         wp_enqueue_script(
             $this->pluginName.'_dist_snapselect_js',
             GLOBAL_CFO_PLUGIN_URL.'dist/snapselect/snapselect.min.js',
