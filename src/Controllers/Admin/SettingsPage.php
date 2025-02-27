@@ -305,32 +305,16 @@ class SettingsPage extends AbstractController
         );
     }
 
-    private function registerClearingFields()
-    {
-        add_settings_section(
-            GLOBAL_CFO_NAME.'_clear_section',
-            'Purge tools',
-            [$this, 'renderClearingSection'],
-            GLOBAL_CFO_NAME.'settings-page'
-        );
-    }
-
     public function registerSettings()
     {
         $this->registerCloudFlareFields();
         $this->registerAWSFields();
         $this->registerOptionsFields();
-        $this->registerClearingFields();
     }
 
     public function renderSectionIntro()
     {
         echo __('', GLOBAL_CFO_NAME);
-    }
-
-    public function renderClearingSection()
-    {
-        echo $this->render('tools:marketPurge.php');
     }
 
     public function renderField($fieldParameters)
