@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (jsonResponse.success == true) {
                     textToDisplay = 'Successfully purged.';
                 } else {
-                    textToDisplay = JSON.stringify(jsonResponse.errors);
+                    textToDisplay = JSON.stringify(jsonResponse.errors[0].message);
                 }
             } catch (error) {
                 textToDisplay = json;

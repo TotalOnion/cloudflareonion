@@ -1,5 +1,6 @@
 <div class="wrap">
-    <h1>Purge Markets</h1>
+    <h3>Purge by Market</h3>
+    <p><? echo __('Click on the market you wish to clear:', GLOBAL_CFO_NAME);?></p>
     <div class="cfo-purge-container" id="cfo-purge-container">
         <?php
             if ( in_array( 'sitepress-multilingual-cms/sitepress.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {

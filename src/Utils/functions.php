@@ -27,10 +27,12 @@
 
     function cfoGetWPMLLanguageById($id) {
         $market = null;
-        $languages = apply_filters( 'wpml_active_languages', NULL, 'orderby=id&order=desc' );
-        foreach ($languages as $key => $language) {
-            if ($language['id'] == $id) {
-                $market = $language;
+        if ( in_array( 'sitepress-multilingual-cms/sitepress.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
+            $languages = apply_filters( 'wpml_active_languages', NULL, 'orderby=id&order=desc' );
+            foreach ($languages as $key => $language) {
+                if ($language['id'] == $id) {
+                    $market = $language;
+                }
             }
         }
         return $market;

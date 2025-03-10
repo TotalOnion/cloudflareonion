@@ -32,7 +32,7 @@ class CacheClearancePage extends AbstractController
     {
         add_settings_section(
             GLOBAL_CFO_NAME.'_clear_section',
-            'Purge tools',
+            '',
             [$this, 'renderMarketClearingSection'],
             GLOBAL_CFO_NAME.'_cache-clearance-page'
         );
@@ -40,6 +40,8 @@ class CacheClearancePage extends AbstractController
 
     public function registerSettings()
     {
+        $this->registerMarketClearingFields();
+
         // Register section and field for the form structure
         add_settings_section(
             GLOBAL_CFO_NAME . '_path_validator_section',
@@ -74,8 +76,6 @@ class CacheClearancePage extends AbstractController
                 // 'default' => '',
             ]
         );
-
-        $this->registerMarketClearingFields();
     }
 
     public function renderField($fieldParameters)
@@ -130,7 +130,7 @@ class CacheClearancePage extends AbstractController
 
     public function renderSectionIntro()
     {
-        echo __('Please provide 1 path per line (E.g: /my-path) :', GLOBAL_CFO_NAME);
+        echo $this->render('tools:urlPurge.php');
     }
 
     public function renderMarketClearingSection()

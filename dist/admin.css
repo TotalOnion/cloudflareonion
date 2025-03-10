@@ -1,6 +1,7 @@
 .cfo-purge-container {
     display: flex;
     gap: 5px;
+    margin-bottom: 1em;
 }
 .cfo-loading {
     border: 16px solid #f3f3f3; /* Light grey */
