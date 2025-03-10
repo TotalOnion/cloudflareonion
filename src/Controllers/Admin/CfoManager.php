@@ -101,7 +101,8 @@ class CfoManager extends AbstractController
 
     private function getPostTypesOption(): array
     {
-        return get_option(GLOBAL_CFO_NAME.'_purgePostTypes');
+        $postTypes = get_option(GLOBAL_CFO_NAME.'_purgePostTypes');
+        return is_array($postTypes) ? $postTypes : [];
     }
 
     private function getPurgeEndpoint(): string
