@@ -22,7 +22,6 @@ $page = isset($_GET['page']) ? $_GET['page'] : GLOBAL_CFO_NAME . 'settings-page'
     <?php
     if ($page == GLOBAL_CFO_NAME . 'settings-page') :
     ?>
-
         <h1>My Settings</h1>
         <form method="post" action="options.php">
             <?php
@@ -36,12 +35,11 @@ $page = isset($_GET['page']) ? $_GET['page'] : GLOBAL_CFO_NAME . 'settings-page'
     else:
     ?>
         <h1>Cache Clearance</h1>
-        <?php settings_errors(); ?>
         <form method="post" action="options.php">
             <?php
             settings_fields(GLOBAL_CFO_NAME . '_clearance');
             do_settings_sections(GLOBAL_CFO_NAME . '_cache-clearance-page');
-            submit_button('Validate Paths');
+            submit_button('Validate Path(s)');
             ?>
         </form>
 
