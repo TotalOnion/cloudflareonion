@@ -107,6 +107,10 @@ class GlobalCfo {
         $cfoManager = new Admin\CfoManager($this->getPluginName(), $this->getVersion());
         $this->loader->addAction('save_post', $cfoManager, 'registerSavedPost');
 
+        // Add the endpoints
+        $API = new Admin\CfoAPI($this->getPluginName(), $this->getVersion(), $cfoManager);
+        $this->loader->addAction('rest_api_init', $API, 'registerEndpoints');
+
         // Enqueue scripts
         $enqueue = new Frontend\Enqueue($this->getPluginName(), $this->getVersion());
         $this->loader->addAction('admin_enqueue_scripts', $enqueue, 'enqueueScripts');

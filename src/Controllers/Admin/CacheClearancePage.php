@@ -28,8 +28,20 @@ class CacheClearancePage extends AbstractController
         );
     }
 
+    private function registerMarketClearingFields()
+    {
+        add_settings_section(
+            GLOBAL_CFO_NAME.'_clear_section',
+            '',
+            [$this, 'renderMarketClearingSection'],
+            GLOBAL_CFO_NAME.'_cache-clearance-page'
+        );
+    }
+
     public function registerSettings()
     {
+        $this->registerMarketClearingFields();
+
         // Register section and field for the form structure
         add_settings_section(
             GLOBAL_CFO_NAME . '_path_validator_section',
@@ -119,7 +131,12 @@ class CacheClearancePage extends AbstractController
 
     public function renderSectionIntro()
     {
-        echo __('Please provide 1 path per line (E.g: /my-path) :', GLOBAL_CFO_NAME);
+        echo $this->render('tools:urlPurge.php');
+    }
+
+    public function renderMarketClearingSection()
+    {
+        echo $this->render('tools:marketPurge.php');
     }
 
     public function renderPage()

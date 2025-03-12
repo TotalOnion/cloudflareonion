@@ -10,23 +10,40 @@ class Enqueue extends AbstractController
     {
         wp_enqueue_script(
             $this->pluginName.'_main',
-            GLOBAL_CFO_PLUGIN_URL.'src/Resources/js/public.js',
+            GLOBAL_CFO_PLUGIN_URL.'dist/public.js',
             [],
             $this->version,
             true
         );
+        wp_enqueue_style(
+            $this->pluginName.'_main_css',
+            GLOBAL_CFO_PLUGIN_URL.'dist/admin.css',
+            [],
+            $this->version
+        );
         wp_enqueue_script(
             $this->pluginName.'_dist_snapselect_js',
-            GLOBAL_CFO_PLUGIN_URL.'dist/js/snapselect.min.js',
+            GLOBAL_CFO_PLUGIN_URL.'dist/snapselect/snapselect.min.js',
             [],
             $this->version,
             true
         );
         wp_enqueue_style(
             $this->pluginName.'_dist_snapselect_css',
-            GLOBAL_CFO_PLUGIN_URL.'dist/css/snapselect.min.css',
+            GLOBAL_CFO_PLUGIN_URL.'dist/snapselect/snapselect.min.css',
             [],
             $this->version
         );
+        wp_enqueue_script(
+            $this->pluginName.'_nonce',
+            GLOBAL_CFO_PLUGIN_URL.'dist/user-config.js',
+            [],
+            $this->version,
+            true
+        );
+        wp_localize_script($this->pluginName.'_nonce', 'myUserData', array(
+            'nonce' => wp_create_nonce('wp_rest'),
+            'id' => get_current_user_id(),
+        ));
     }
 }

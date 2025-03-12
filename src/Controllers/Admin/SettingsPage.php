@@ -293,7 +293,7 @@ class SettingsPage extends AbstractController
         );
         add_settings_field(
             GLOBAL_CFO_NAME.'_purgePostTypes',
-            'Post types',
+            'Post types to purge',
             [$this, 'renderField'],
             GLOBAL_CFO_NAME.'settings-page',
             GLOBAL_CFO_NAME.'_options_section_purge',

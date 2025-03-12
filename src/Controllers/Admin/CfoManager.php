@@ -16,10 +16,10 @@ class CfoManager extends AbstractController
 
     public function registerSavedItem($url)
     {
-        $this->sendPurgeRequest($url);
+        $this->sendPurgeRequest($this->getPurgeBodyUrl($url));
 
         if ($this->getTrailingSlashOption()) {
-            $this->sendPurgeRequest(rtrim($url, '/'));
+            $this->sendPurgeRequest($this->getPurgeBodyUrl(rtrim($url, '/')));
         }
     }
 
@@ -41,17 +41,26 @@ class CfoManager extends AbstractController
         $this->registerSavedItem($postUrl);
     }
 
-    private function sendPurgeRequest($postUrl): void
+    public function purgeMarket($marketId)
+    {
+        $marketURL = cfoGetWPMLLanguageById($marketId)['url'];
+        if($marketURL) {
+            $marketURI = parse_url($marketURL, PHP_URL_HOST) . parse_url($marketURL, PHP_URL_PATH);
+            $body = json_encode([
+                'prefixes' => [$marketURI]
+            ], JSON_UNESCAPED_SLASHES);
+            return $this->sendPurgeRequest($body);
+        }
+    }
+
+    private function sendPurgeRequest($body): string
     {
         $endpointUrl = $this->getPurgeEndpoint();
         $headers = [
             'Content-Type' => 'application/json',
             'Authorization' => 'Bearer ' . $this->getAPIKey(),
         ];
-        $body = json_encode([
-            'files' => [$postUrl]
-        ]);
-        $this->logger->logToAws('Purging cache for ' . $postUrl);
+        $this->logger->logToAws('Purging cache with ' . $body);
         $response = wp_remote_post($endpointUrl, [
             'headers' => $headers,
             'body' => $body,
@@ -59,6 +68,15 @@ class CfoManager extends AbstractController
             'data_format' => 'body',
         ]);
         $this->logger->logToAws($response['body']);
+        return $response['body'];
+    }
+
+    private function getPurgeBodyUrl($url): string
+    {
+        $body = json_encode([
+            'files' => [$url]
+        ]);
+        return $body;
     }
 
     private function getAPIKey(): string
@@ -83,7 +101,8 @@ class CfoManager extends AbstractController
 
     private function getPostTypesOption(): array
     {
-        return get_option(GLOBAL_CFO_NAME.'_purgePostTypes');
+        $postTypes = get_option(GLOBAL_CFO_NAME.'_purgePostTypes');
+        return is_array($postTypes) ? $postTypes : [];
     }
 
     private function getPurgeEndpoint(): string
