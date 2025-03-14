@@ -24,13 +24,28 @@ jobs:
 
       - name: Setup the environment
         run: |
+          DEPLOYMENT_DIR="`echo $GITHUB_REPOSITORY | awk -F '/' '{printf $2}'`"
+          echo "DEPLOYMENT_DIR=${DEPLOYMENT_DIR}"
+          echo "DEPLOYMENT_DIR=${DEPLOYMENT_DIR}" >> $GITHUB_ENV
           LAST_VERSION="`echo ${{ steps.keydb.outputs.release }}`"
+          echo "LAST_VERSION=${LAST_VERSION}"
           echo "LAST_VERSION=${LAST_VERSION}" >> $GITHUB_ENV
 
-      - uses: actions/checkout@v3
+      - name: CheckOut Source Code
+        uses: actions/checkout@v3
+        continue-on-error: true
+        with:
+          ref: main
+          path: ${{ env.DEPLOYMENT_DIR }}
+          fetch-depth: 0
+          persist-credentials: true
+          set-safe-directory: true
+          submodules: 'recursive'
+          clean: true
 
       - name: Replace version in the code
         run: |
+          cd ${PWD}/${{ env.DEPLOYMENT_DIR }}/
           sed -E "s/(Version)\:\s+[0-9]+\.[0-9]+\.[0-9]+/Version:           ${LAST_VERSION}/g" global-cfo.php > new-global-cfo.php
           sed -E "s/CFO_VERSION', '[0-9]+\.[0-9]+\.[0-9]+/CFO_VERSION', '${LAST_VERSION}/g" global-cfo.ph >> new-global-cfo.php
           cat new-global-cfo.php
