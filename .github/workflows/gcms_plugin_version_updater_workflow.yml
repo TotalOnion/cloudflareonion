@@ -9,43 +9,23 @@ on:
     types: [ "closed" ]
     branches: [ "master","main" ]
 
-  workflow_call:
-    inputs:
-      PHP_VERSION:
-        required: false
-        type: string
-        default: '8.2'
-
-defaults:
-  run:
-    shell: bash
-
-
 jobs:
-
-
-#################################
-# SETUP
-#################################
-
-  Build:
-    name: Build ⚙️
-    container:
-      image: quay.io/pantheon-public/build-tools-ci:8.x-php${{ inputs.PHP_VERSION }}
-      options: --user root
+  build:
+    name: RedisTimeSeries
     runs-on: ubuntu-latest
-    permissions: write-all
-
     steps:
-
-
       - id: keydb
         uses: pozetroninc/github-action-get-latest-release@master
         with:
           owner: JohnSully
           repo: KeyDB
           excludes: prerelease, draft
-      - id: timeseries
-        uses: pozetroninc/github-action-get-latest-release@master
-        with:
-          repository: RedisTimeSeries/RedisTimeSeries
+
+      - uses: actions/checkout@v3
+      
+      - name: Deleting any orphaned Multidev environments
+        id: showing
+        shell: bash
+        run: |
+          echo "VERSION :  >>> ${{ steps.keydb.outputs.release }} <<<<<"
+          echo " tags: latest, ${{ steps.keydb.outputs.release }}_${{ steps.timeseries.outputs.release }}""
