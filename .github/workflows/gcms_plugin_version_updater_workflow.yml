@@ -14,9 +14,10 @@ jobs:
     name: RedisTimeSeries
     runs-on: ubuntu-latest
     steps:
-      - id: keydb
+      - id: KeyDB
         uses: pozetroninc/github-action-get-latest-release@master
         with:
+          repository: ${{ github.repository }}
           owner: JohnSully
           repo: KeyDB
           excludes: prerelease, draft
@@ -28,4 +29,4 @@ jobs:
         shell: bash
         run: |
           echo "VERSION :  >>> ${{ steps.keydb.outputs.release }} <<<<<"
-          echo " tags: latest, ${{ steps.keydb.outputs.release }}_${{ steps.timeseries.outputs.release }}""
+          echo " tags: latest, ${{ steps.keydb.outputs.release }}_${{ steps.timeseries.outputs.release }}"
