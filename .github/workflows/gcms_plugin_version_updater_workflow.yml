@@ -23,10 +23,9 @@ jobs:
           excludes: prerelease, draft
 
       - uses: actions/checkout@v3
-      
-      - name: Deleting any orphaned Multidev environments
-        id: showing
-        shell: bash
+
+      - name: Setup the environment
         run: |
-          echo "VERSION :  >>> ${{ steps.keydb.outputs.release }} <<<<<"
-          echo " tags: latest, ${{ steps.keydb.outputs.release }}_${{ steps.timeseries.outputs.release }}"
+          LAST_VERSION="`echo ${{ steps.keydb.outputs.release }}`"
+          echo "LAST_VERSION=${LAST_VERSION}" >> $GITHUB_ENV
+
