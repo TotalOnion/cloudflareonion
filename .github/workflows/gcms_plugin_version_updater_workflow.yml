@@ -9,6 +9,13 @@ on:
     types: [ "closed" ]
     branches: [ "master","main" ]
 
+  workflow_call:
+    inputs:
+      PHP_VERSION:
+        required: false
+        type: string
+        default: '8.2'
+
 defaults:
   run:
     shell: bash
@@ -28,7 +35,9 @@ jobs:
       options: --user root
     runs-on: ubuntu-latest
     permissions: write-all
+
     steps:
+
 
       - id: keydb
         uses: pozetroninc/github-action-get-latest-release@master
