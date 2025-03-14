@@ -1,7 +1,7 @@
 name: "gcms_plugin_version_updater_workflow 🚀"
 
 ## Description: THIS TRIGGERS ON ALL PULL REQUEST CLOSE / MERGE
-## - Deletes all orphaned multidevs (multidevs without an open PR)
+## - XXXXXX
 
 on:
   # Triggers the workflow when a PR is closed (merged, or just closed)
@@ -13,13 +13,30 @@ defaults:
   run:
     shell: bash
 
+
 jobs:
 
-  Do:
-    # @main will load latest version (might be unstable)
-    # We recommend to always choose a specific version
-    uses: irishdistillers/pipelines/.github/workflows/gcms_plugin_version_updater_workflow.yml@latest
-    with:
-      PHP_VERSION: 8.2
-    secrets:
-      TERMINUS_TOKEN: ${{ secrets.TERMINUS_TOKEN }}
+
+#################################
+# SETUP
+#################################
+
+  Build:
+    name: Build ⚙️
+    container:
+      image: quay.io/pantheon-public/build-tools-ci:8.x-php${{ inputs.PHP_VERSION }}
+      options: --user root
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+
+      - id: keydb
+        uses: pozetroninc/github-action-get-latest-release@master
+        with:
+          owner: JohnSully
+          repo: KeyDB
+          excludes: prerelease, draft
+      - id: timeseries
+        uses: pozetroninc/github-action-get-latest-release@master
+        with:
+          repository: RedisTimeSeries/RedisTimeSeries
