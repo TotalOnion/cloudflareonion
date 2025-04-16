@@ -45,10 +45,10 @@ jobs:
 
       - name: Replace version in the code
         run: |
-          cd ${PWD}/${{ env.DEPLOYMENT_DIR }}/
+          cd ${{ env.DEPLOYMENT_DIR }}/
           ls -ail ./
 
-          cp ./global-cfo.php /tmp/new-global-cfo.php
+          cp global-cfo.php /tmp/new-global-cfo.php
           sed --silent -E "s/(Version)\:\s+[0-9]+\.[0-9]+\.[0-9]+/Version:           ${LAST_VERSION}/g" ./global-cfo.php > /tmp/new-global-cfo.php
           sed --silent -E "s/CFO_VERSION', '[0-9]+\.[0-9]+\.[0-9]+/CFO_VERSION', '${LAST_VERSION}/g" ./global-cfo.php >> /tmp/new-global-cfo.php
           cat /tmp/new-global-cfo.php
