@@ -40,4 +40,49 @@ final class FunctionsTest extends TestCase
         $encoded = encodeNonLatinCharacters($input);
         $this->assertEquals($encoded, $expected);
     }
+
+
+    //=======================
+    //=======================
+    //=======================
+
+
+    public static function invalidPathsProvider(): array
+    {
+        return [
+            'Paths must start with /'       => [
+                'a/b/c',
+                false
+            ],
+            'Empty paths are ignored'       => [
+                '',
+                false
+            ],
+            'Urls are not paths'            => [
+                'http://chivas.com/a/b/c',
+                false
+            ],
+            'Empty slashes can make valid paths'  => [
+                '////m/a/b/c',
+                true
+            ],
+            'Paths with invalid characters are not accepted'       => [
+                '/[claude]/m/a/b/c',
+                false
+            ],
+            'Paths with invalid characters are not accepted'       => [
+                '/{claude}/<>/a/b/c',
+                false
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider invalidPathsProvider
+     */
+    public function testInvalidUrlPaths(string $input, bool $expected): void
+    {
+        $url = isValidUrlPath($input);
+        $this->assertEquals($url, $expected);
+    }
 }
