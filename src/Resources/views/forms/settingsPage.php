@@ -41,7 +41,7 @@ $page = isset($_GET['page']) ? $_GET['page'] : GLOBAL_CFO_NAME . 'settings-page'
             <?php
             settings_fields(GLOBAL_CFO_NAME . '_clearance');
             do_settings_sections(GLOBAL_CFO_NAME . '_cache-clearance-page');
-            submit_button('Validate URLs');
+            submit_button('Validate Paths');
             ?>
         </form>
 
