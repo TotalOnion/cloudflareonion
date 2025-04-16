@@ -113,14 +113,16 @@ class CacheClearancePage extends AbstractController
                     'error'
                 );
             } else {
+                $encodedPath = encodeNonLatinCharacters($path);
+                $url = site_url($encodedPath);
+
                 add_settings_error(
                     'field_path_validator',
                     'invalid_paths',
-                    "Sending '${path}' to Cloudflare for clearance",
+                    "Sending '${url}' to Cloudflare for clearance",
                     'warning'
                 );
 
-                $url = home_url($path);
                 $this->cfoManager->registerSavedItem($url);
             }
         }
