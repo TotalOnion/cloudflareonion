@@ -63,9 +63,9 @@ jobs:
           echo "✅ sed -E "s/${UNDEFINED_VERSION}/${LAST_VERSION}/g" ./global-cfo.php > /tmp/new-global-cfo.php"
           sed -E "s/${UNDEFINED_VERSION}/${LAST_VERSION}/g" ./global-cfo.php > /tmp/new-global-cfo.php
 
-          echo ""
-          echo "💾 cp /tmp/new-global-cfo.php global-cfo.php"
-          cp /tmp/new-global-cfo.php global-cfo.php
+          # echo ""
+          # echo "💾 cp /tmp/new-global-cfo.php global-cfo.php"
+          # cp /tmp/new-global-cfo.php global-cfo.php
 
       - name: Is version is still undefined?
         working-directory: ${{ env.DEPLOYMENT_DIR }}
