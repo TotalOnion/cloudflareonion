@@ -77,14 +77,19 @@ jobs:
             echo "-----MATCHES-----"
             echo "$TMP_VERIFY_VERSION"
             echo "-----END-----"
-          fi
           
-          TMP_COUNT_VERSIONS=$(echo -n "echo '${TMP_VERIFY_VERSION}' | wc -l")
-          if [[ ${TMP_COUNT_VERSIONS} > 0 ]]; then
-            TMP_MSG="Fail to replace all the ${UNDEFINED_VERSION} (find $TMP_COUNT_VERSIONS occurrences)"
-            echo "::error:: ${TMP_MSG}"
-            echo "➕ ${TMP_MSG}" >> $GITHUB_STEP_SUMMARY
-            exit 1
+            TMP_COUNT_VERSIONS=$(echo -n "echo '${TMP_VERIFY_VERSION}' | wc -l")
+            if [[ ${TMP_COUNT_VERSIONS} > 0 ]]; then
+              TMP_MSG="Fail to replace all the ${UNDEFINED_VERSION} (find $TMP_COUNT_VERSIONS occurrences)"
+              echo "::error:: ${TMP_MSG}"
+              echo "➕ ${TMP_MSG}" >> $GITHUB_STEP_SUMMARY
+              exit 1
+            fi
+
+          else
+            echo "🎉 No occurrences found. Patching fully done."
           fi
+
+
 
         
