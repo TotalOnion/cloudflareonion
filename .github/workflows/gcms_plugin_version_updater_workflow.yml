@@ -70,8 +70,8 @@ jobs:
         working-directory: ${{ env.DEPLOYMENT_DIR }}
         run: |
 
-          TMP_CMD="grep -Forni \"${UNDEFINED_VERSION}\" --exclude-dir=.git || true"
-          TMP_VERIFY_VERSION="echo -n $("$TMP_CMD")"
+          TMP_CMD="grep -Forni \"${UNDEFINED_VERSION}\" --exclude-dir=.git"
+          TMP_VERIFY_VERSION="echo -n $("$TMP_CMD") || true"
           echo "💡 Running => '${TMP_CMD}'" 
 
           if [[ ! -z "${TMP_VERIFY_VERSION}" ]]; then
