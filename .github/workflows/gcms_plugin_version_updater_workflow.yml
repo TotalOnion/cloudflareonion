@@ -1,6 +1,6 @@
 name: "gcms_plugin_version_updater_workflow 🚀"
 
-## Description: THIS TRIGGERS ON ALL PULL REQUEST CLOSE / MERGE
+## Description: Search the code for UNDEFINED_VERSION and replaces it with the deployed version.
 ## - XXXXXX
 
 on:
@@ -32,8 +32,8 @@ jobs:
           echo "LAST_VERSION=${LAST_VERSION}"
           echo "LAST_VERSION=${LAST_VERSION}" >> $GITHUB_ENV
 
-          # Please use GCFO_UNDEFINED_VERSION
-          TMP_UNDEFINED_VERSION="HACKY-HACKY"
+          # Please use __GCFO_UNDEFINED_VERSION__ in your code
+          TMP_UNDEFINED_VERSION="__GCFO_UNDEFINED_VERSION__"
           echo "UNDEFINED_VERSION=${TMP_UNDEFINED_VERSION}"
           echo "UNDEFINED_VERSION=${TMP_UNDEFINED_VERSION}" >> $GITHUB_ENV
 
