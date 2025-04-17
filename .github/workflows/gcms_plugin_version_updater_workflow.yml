@@ -79,6 +79,7 @@ jobs:
           TMP_VERIFY_VERSION=$(echo -n `${TMP_CMD}`)
 
           echo "RESULT:  ${TMP_VERIFY_VERSION}"
+          
 
           # if [[ ! -z "${TMP_VERIFY_VERSION}" ]]; then
           #   echo "searching the codebase for ${UNDEFINED_VERSION}"
