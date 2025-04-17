@@ -63,13 +63,18 @@ jobs:
       - name: Is version is still undefined?
         working-directory: ${{ env.DEPLOYMENT_DIR }}
         run: |          
-          TMP_VERIFY_VERSION=$(echo -n `grep -Forni "${UNDEFINED_VERSION}" --exclude-dir=.git`)
+          TMP_VERIFY_VERSION="$(grep -Forni "${UNDEFINED_VERSION}" --exclude-dir=.git || true)"
 
           echo "searching the codebase for ${UNDEFINED_VERSION}"
-          echo "\n ----- \n"
-          echo $TMP_VERIFY_VERSION
-          echo "\n ----- \n\n"
+          echo "-----MATCHES-----"
+          echo "$TMP_VERIFY_VERSION"
+          echo "-----END-----"
           
+          mapfile -t MATCHED_LINES << $TMP_VERIFY_VERSION
+          for line in "${MATCHED_LINES[@]}"; do
+            echo ">>  $line"
+          done
+
           TMP_COUNT_VERSIONS=$(echo -n "'$TMP_VERIFY_VERSION' | wc -l")
           if ${TMP_COUNT_VERSIONS} > 0; then
             TMP_MSG="Fail to replace all the ${UNDEFINED_VERSION} (find $TMP_VERIFY_VERSION occurrences)"
