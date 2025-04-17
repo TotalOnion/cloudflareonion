@@ -71,6 +71,8 @@ jobs:
         working-directory: ${{ env.DEPLOYMENT_DIR }}
         run: |
 
+          cat global-cfo.php
+
           TMP_CMD="grep -Forni \"${UNDEFINED_VERSION}\" --exclude-dir=.git"
           echo "💡 Running => \"${TMP_CMD}\"" 
 
