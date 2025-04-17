@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    name: RedisTimeSeries
+    name: Version Updater
     runs-on: ubuntu-latest
     steps:
       - id: KeyDB
@@ -52,12 +52,16 @@ jobs:
       - name: Replace version in the code
         working-directory: ${{ env.DEPLOYMENT_DIR }}
         run: |
+          echo "🔍 Listing the files"
           ls -ail ./
 
+          echo "✅ cp global-cfo.php /tmp/new-global-cfo.php"
           cp global-cfo.php /tmp/new-global-cfo.php
 
+          echo "✅ sed -E "s/${UNDEFINED_VERSION}/${LAST_VERSION}/g" ./global-cfo.php > /tmp/new-global-cfo.php"
           sed -E "s/${UNDEFINED_VERSION}/${LAST_VERSION}/g" ./global-cfo.php > /tmp/new-global-cfo.php
 
+          echo "💾 cp /tmp/new-global-cfo.php global-cfo.php"
           cp /tmp/new-global-cfo.php global-cfo.php
 
       - name: Is version is still undefined?
@@ -70,11 +74,6 @@ jobs:
           echo "$TMP_VERIFY_VERSION"
           echo "-----END-----"
           
-          mapfile -t MATCHED_LINES << $TMP_VERIFY_VERSION
-          for line in "${MATCHED_LINES[@]}"; do
-            echo ">>  $line"
-          done
-
           TMP_COUNT_VERSIONS=$(echo -n "'$TMP_VERIFY_VERSION' | wc -l")
           if ${TMP_COUNT_VERSIONS} > 0; then
             TMP_MSG="Fail to replace all the ${UNDEFINED_VERSION} (find $TMP_VERIFY_VERSION occurrences)"
