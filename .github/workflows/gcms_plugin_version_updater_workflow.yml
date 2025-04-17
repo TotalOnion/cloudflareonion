@@ -72,13 +72,16 @@ jobs:
           TMP_VERIFY_VERSION="$(grep -Forni "${UNDEFINED_VERSION}" --exclude-dir=.git || true)"
 
           echo "searching the codebase for ${UNDEFINED_VERSION}"
-          echo "-----MATCHES-----"
-          echo "$TMP_VERIFY_VERSION"
-          echo "-----END-----"
+
+          if [[ -z "${TMP_VERIFY_VERSION}" ]]; then
+            echo "-----MATCHES-----"
+            echo "$TMP_VERIFY_VERSION"
+            echo "-----END-----"
+          fi
           
-          TMP_COUNT_VERSIONS=$(echo -n "'$TMP_VERIFY_VERSION' | wc -l")
-          if ${TMP_COUNT_VERSIONS} > 0; then
-            TMP_MSG="Fail to replace all the ${UNDEFINED_VERSION} (find $TMP_VERIFY_VERSION occurrences)"
+          TMP_COUNT_VERSIONS=$(echo -n "echo '${TMP_VERIFY_VERSION}' | wc -l")
+          if [[ ${TMP_COUNT_VERSIONS} > 0 ]]; then
+            TMP_MSG="Fail to replace all the ${UNDEFINED_VERSION} (find $TMP_COUNT_VERSIONS occurrences)"
             echo "::error:: ${TMP_MSG}"
             echo "➕ ${TMP_MSG}" >> $GITHUB_STEP_SUMMARY
             exit 1
