@@ -71,7 +71,7 @@ jobs:
         run: |
 
           TMP_CMD="grep -Forni \"${UNDEFINED_VERSION}\" --exclude-dir=.git"
-          TMP_VERIFY_VERSION="echo -n $("$TMP_CMD") || true"
+          TMP_VERIFY_VERSION="echo -n ${$TMP_CMD} || true"
           echo "💡 Running => '${TMP_CMD}'" 
 
           echo "RESULT:  ${TMP_VERIFY_VERSION}"
