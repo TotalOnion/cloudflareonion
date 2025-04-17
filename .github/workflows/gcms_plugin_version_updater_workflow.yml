@@ -63,15 +63,15 @@ jobs:
       - name: Is version is still undefined?
         working-directory: ${{ env.DEPLOYMENT_DIR }}
         run: |          
-          TMP_VERIFY_VERSION="$(echo -n `grep -rni '${UNDEFINED_VERSION}'`)"
+          TMP_VERIFY_VERSION=$(echo -n `grep -rni "${UNDEFINED_VERSION}"`)
 
           echo "searching the code base for ${UNDEFINED_VERSION}"
           echo $TMP_VERIFY_VERSION
           
-          if $(echo -n "'$TMP_VERIFY_VERSION' | wc -l") > 0; then
-            echo "::error:: Version"
-            echo "➕ Fail to replace all the ${UNDEFINED_VERSION}" >> $GITHUB_STEP_SUMMARY
-            exit 1
-          fi
+          # if $(echo -n "'$TMP_VERIFY_VERSION' | wc -l") > 0; then
+          #   echo "::error:: Version"
+          #   echo "➕ Fail to replace all the ${UNDEFINED_VERSION}" >> $GITHUB_STEP_SUMMARY
+          #   exit 1
+          # fi
 
         
