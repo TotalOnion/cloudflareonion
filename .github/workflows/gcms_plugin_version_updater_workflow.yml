@@ -66,9 +66,9 @@ jobs:
           TMP_VERIFY_VERSION=$(echo -n `grep -Forni "${UNDEFINED_VERSION}" --exclude-dir=.git`)
 
           echo "searching the codebase for ${UNDEFINED_VERSION}"
-          echo "-----"
+          echo "\n ----- \n"
           echo $TMP_VERIFY_VERSION
-          echo "-----"
+          echo "\n ----- \n\n"
           
           TMP_COUNT_VERSIONS=$(echo -n "'$TMP_VERIFY_VERSION' | wc -l")
           if ${TMP_COUNT_VERSIONS} > 0; then
