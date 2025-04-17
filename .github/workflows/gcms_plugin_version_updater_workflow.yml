@@ -63,7 +63,7 @@ jobs:
       - name: Is version is still undefined?
         working-directory: ${{ env.DEPLOYMENT_DIR }}
         run: |          
-          TMP_VERIFY_VERSION=$(echo -n `grep -rni "${UNDEFINED_VERSION}" --exclude-dir=.git`)
+          TMP_VERIFY_VERSION=$(echo -n `grep -Frni "${UNDEFINED_VERSION}" --exclude-dir=.git`)
 
           echo "searching the code base for ${UNDEFINED_VERSION}"
           echo $TMP_VERIFY_VERSION
