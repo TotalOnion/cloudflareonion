@@ -17,8 +17,8 @@ jobs:
       - uses: pozetroninc/github-action-get-latest-release@master
         with:
           repository: ${{ github.repository }}
-          # owner: JohnSully
-          # repo: KeyDB
+          owner: JohnSully
+          repo: KeyDB
           excludes: prerelease, draft
 
       - name: Setup the environment
