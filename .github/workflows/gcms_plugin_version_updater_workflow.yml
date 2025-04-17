@@ -11,10 +11,11 @@ on:
 
 jobs:
   build:
-    name: Version Updater
+    name: RedisTimeSeries
     runs-on: ubuntu-latest
     steps:
-      - uses: pozetroninc/github-action-get-latest-release@master
+      - id: KeyDB
+        uses: pozetroninc/github-action-get-latest-release@master
         with:
           repository: ${{ github.repository }}
           owner: JohnSully
@@ -47,7 +48,7 @@ jobs:
           set-safe-directory: true
           submodules: 'recursive'
           clean: true
-
+          
       - name: Replace version in the code
         working-directory: ${{ env.DEPLOYMENT_DIR }}
         run: |
@@ -97,6 +98,3 @@ jobs:
           #   echo "🎉 No occurrences found. Patching fully done."
           # fi
 
-
-
-        
