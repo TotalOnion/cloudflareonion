@@ -27,9 +27,15 @@ jobs:
           DEPLOYMENT_DIR="`echo $GITHUB_REPOSITORY | awk -F '/' '{printf $2}'`"
           echo "DEPLOYMENT_DIR=${DEPLOYMENT_DIR}"
           echo "DEPLOYMENT_DIR=${DEPLOYMENT_DIR}" >> $GITHUB_ENV
+
           LAST_VERSION="`echo ${{ steps.keydb.outputs.release }}`"
           echo "LAST_VERSION=${LAST_VERSION}"
           echo "LAST_VERSION=${LAST_VERSION}" >> $GITHUB_ENV
+
+          # Please use GCFO_UNDEFINED_VERSION
+          TMP_UNDEFINED_VERSION="0.0.7"
+          echo "UNDEFINED_VERSION=${TMP_UNDEFINED_VERSION}"
+          echo "UNDEFINED_VERSION=${TMP_UNDEFINED_VERSION}" >> $GITHUB_ENV
 
       - name: CheckOut Source Code
         uses: actions/checkout@v3
@@ -44,16 +50,28 @@ jobs:
           clean: true
 
       - name: Replace version in the code
+        working-directory: ${{ env.DEPLOYMENT_DIR }}
         run: |
-          cd ${{ env.DEPLOYMENT_DIR }}/
           ls -ail ./
 
           cp global-cfo.php /tmp/new-global-cfo.php
 
-          cat /tmp/new-global-cfo.php
+          sed -E "s/${UNDEFINED_VERSION}/${LAST_VERSION}/g" ./global-cfo.php > /tmp/new-global-cfo.php
 
-          sed -E "s/(Version)\:\s+[0-9]+\.[0-9]+\.[0-9]+/Version:           ${LAST_VERSION}/g" ./global-cfo.php > /tmp/new-global-cfo.php
-          sed --silent -E "s/CFO_VERSION', '[0-9]+\.[0-9]+\.[0-9]+/CFO_VERSION', '${LAST_VERSION}/g" ./global-cfo.php >> /tmp/new-global-cfo.php
-          cat /tmp/new-global-cfo.php
+          cp /tmp/new-global-cfo.php global-cfo.php
 
+      - name: Is version is still undefined?
+        working-directory: ${{ env.DEPLOYMENT_DIR }}
+        run: |          
+          TMP_VERIFY_VERSION="$(echo -n `grep -rni '${UNDEFINED_VERSION}'`)"
 
+          echo "searching the code base for ${UNDEFINED_VERSION}"
+          echo $TMP_VERIFY_VERSION
+          
+          if $(echo -n "'$TMP_VERIFY_VERSION' | wc -l") > 0; then
+            echo "::error:: Version"
+            echo "➕ Fail to replace all the ${UNDEFINED_VERSION}" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
+
+        
