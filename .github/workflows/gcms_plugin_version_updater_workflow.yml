@@ -14,12 +14,11 @@ jobs:
     name: Version Updater
     runs-on: ubuntu-latest
     steps:
-      - id: KeyDB
-        uses: pozetroninc/github-action-get-latest-release@master
+      - uses: pozetroninc/github-action-get-latest-release@master
         with:
           repository: ${{ github.repository }}
-          owner: JohnSully
-          repo: KeyDB
+          # owner: JohnSully
+          # repo: KeyDB
           excludes: prerelease, draft
 
       - name: Setup the environment
@@ -55,12 +54,15 @@ jobs:
           echo "🔍 Listing the files"
           ls -ail ./
 
+          echo ""
           echo "✅ cp global-cfo.php /tmp/new-global-cfo.php"
           cp global-cfo.php /tmp/new-global-cfo.php
 
+          echo ""
           echo "✅ sed -E "s/${UNDEFINED_VERSION}/${LAST_VERSION}/g" ./global-cfo.php > /tmp/new-global-cfo.php"
           sed -E "s/${UNDEFINED_VERSION}/${LAST_VERSION}/g" ./global-cfo.php > /tmp/new-global-cfo.php
 
+          echo ""
           echo "💾 cp /tmp/new-global-cfo.php global-cfo.php"
           cp /tmp/new-global-cfo.php global-cfo.php
 
