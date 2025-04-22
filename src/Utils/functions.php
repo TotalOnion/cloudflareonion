@@ -1,4 +1,22 @@
 <?php
+    function encodeNonLatinCharacters($string) {
+        // Only encode weird characters
+        if(preg_match('/[^\x20-\x7e]/', $string)) {
+            $segments = explode('/', $string);
+            
+            // Encode each segment but skip empty ones (which come from leading/trailing slashes)
+            $encodedSegments = array_map(function($segment) {
+                return $segment === '' ? '' : strtolower(rawurlencode($segment));
+            }, $segments);
+            
+            // Recombine the segments using slashes
+            return implode('/', $encodedSegments);
+            
+        }
+
+        return $string;
+    }
+
     function cfoSanitizeMultipleChoice($input) {
         return $input ? filter_var_array($input, FILTER_SANITIZE_FULL_SPECIAL_CHARS) : [];
     }

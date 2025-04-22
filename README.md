@@ -16,6 +16,14 @@ An example shortcode, and `wp-json` endpoint have been added.
 >[!IMPORTANT]
 >This requires both ACF and WPML to work
 
+# Tests
+
+Running the tests
+```bash
+./vendor/bin/phpunit tests/
+./vendor/bin/phpunit tests/phpunit/Utils/FunctionsTest.php
+```
+
 # Doc(s)
 - [ Manipulate the plugin via Terminus ](https://pernod-ricard.atlassian.net/wiki/spaces/IR/pages/30078019394/03_Terminus+Important+commands#Plugin-management-via-Terminus)
 
