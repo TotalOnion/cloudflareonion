@@ -1,0 +1,22 @@
+name: "Actions Workflow 🚀"
+
+## Description: Search the code for UNDEFINED_VERSION and replaces it with the deployed version.
+## - XXXXXX
+
+on:
+  # Triggers the workflow when a PR is closed (merged, or just closed)
+  pull_request:
+    types: [ "closed" ]
+    branches: [ "version-updater" ]
+
+jobs:
+  build:
+    name: Actions Workflow
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Runnning Test(s)
+        run: |
+          ./vendor/bin/phpunit tests/
+
+          
