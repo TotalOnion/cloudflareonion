@@ -35,8 +35,8 @@
             return false;
         }
 
-        // Check for control characters
-        if (preg_match('/[\x00-\x1F\x7F]/', $decoded)) {
+        // Reject non ascii characters
+        if (preg_match('/[^\x01-\x7F]/', $decoded)) {
             return false;
         }
 
