@@ -7,7 +7,7 @@ on:
   # Triggers the workflow when a PR is closed (merged, or just closed)
   pull_request:
     types: [ "closed" ]
-    branches: [ "version-updater" ]
+    branches: [ "run-tests" ]
 
 jobs:
   build:
