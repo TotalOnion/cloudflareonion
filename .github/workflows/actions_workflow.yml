@@ -1,12 +1,9 @@
 name: "Actions Workflow 🚀"
 
-## Description: Search the code for UNDEFINED_VERSION and replaces it with the deployed version.
-
 on:
-  # Triggers the workflow when a PR is closed (merged, or just closed)
   pull_request:
-    types: [ "closed" ]
-    branches: [ "run-tests" ]
+    types: [ "open" ]
+    branches: [ "main" ]
 
 env:
    DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: true
