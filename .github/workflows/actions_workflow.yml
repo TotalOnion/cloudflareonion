@@ -15,12 +15,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-
       - name: Setup the environment
         run: |
           DEPLOYMENT_DIR="`echo $GITHUB_REPOSITORY | awk -F '/' '{printf $2}'`"
           echo "DEPLOYMENT_DIR=${DEPLOYMENT_DIR}"
           echo "DEPLOYMENT_DIR=${DEPLOYMENT_DIR}" >> $GITHUB_ENV
+
+      - name: Populate composer_auth
+        id: set_composer_auth
+        run: |
+          cat > /tmp/composer_auth <<EOF
+            '{
+                "github-oauth": {
+                    "github.com": "${{ secrets.GITHUB_TOKEN }}"
+                }
+            }'
+          EOF
+
+          TMP_COMPOSER_AUTH="$(echo `cat /tmp/composer_auth | sed s/\'//g`)"
+          echo "COMPOSER_AUTH<<EOF" >> $GITHUB_ENV
+          echo "$TMP_COMPOSER_AUTH" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
       - name: CheckOut Source Code
         uses: actions/checkout@v3
@@ -33,6 +48,16 @@ jobs:
           set-safe-directory: true
           submodules: 'recursive'
           clean: true
+      
+      - name: Composer diagnose [::DEBUG_INFO::] 🧨
+        working-directory: ${{ env.DEPLOYMENT_DIR }}
+        id: composer_diagnose
+        run: composer diagnose --working-dir ${PWD}/${{ env.DEPLOYMENT_DIR }} || true
+
+      # @TODO check necessary scripts + add to summary
+      - name: Composer install
+        id: composer_install
+        run: composer install --verbose --working-dir ${PWD}/${{ env.DEPLOYMENT_DIR }} ${{ env.COMPOSER_VERBOSE }}
           
       - name: Runnning Test(s)
         working-directory: ${{ env.DEPLOYMENT_DIR }}
