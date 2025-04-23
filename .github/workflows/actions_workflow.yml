@@ -10,9 +10,9 @@ on:
     branches: [ "run-tests" ]
 
 env:
-   DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: 1
-   FORCE_COLOR: 'true'
-   TERM: 'xterm-color'
+   DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: true
+   FORCE_COLOR: true
+   TERM: xterm-256color
 
 jobs:
   build:
@@ -57,17 +57,17 @@ jobs:
       - name: Composer diagnose
         working-directory: ${{ env.DEPLOYMENT_DIR }}
         id: composer_diagnose
-        run: composer diagnose || true
+        run: composer diagnose --ansi || true
 
       # @TODO check necessary scripts + add to summary
       - name: Composer install
         working-directory: ${{ env.DEPLOYMENT_DIR }}
         id: composer_install
-        run: composer install --verbose
+        run: composer install --ansi --verbose
           
       - name: Runnning Test(s)
         working-directory: ${{ env.DEPLOYMENT_DIR }}
         run: |
-          ./vendor/bin/phpunit tests/
+          ./vendor/bin/phpunit --colors tests/
 
           
