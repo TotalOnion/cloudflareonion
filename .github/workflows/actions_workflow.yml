@@ -21,6 +21,11 @@ jobs:
           echo "DEPLOYMENT_DIR=${DEPLOYMENT_DIR}"
           echo "DEPLOYMENT_DIR=${DEPLOYMENT_DIR}" >> $GITHUB_ENV
 
+          # Activate color support
+          echo "DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION=1" >> $GITHUB_ENV
+          echo "FORCE_COLOR=1" >> $GITHUB_ENV
+          echo "TERM=xterm-color" >> $GITHUB_ENV
+
       - name: Populate composer_auth
         id: set_composer_auth
         run: |
