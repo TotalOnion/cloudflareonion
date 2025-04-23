@@ -49,15 +49,16 @@ jobs:
           submodules: 'recursive'
           clean: true
       
-      - name: Composer diagnose [::DEBUG_INFO::] 🧨
+      - name: Composer diagnose
         working-directory: ${{ env.DEPLOYMENT_DIR }}
         id: composer_diagnose
-        run: composer diagnose --working-dir ${PWD}/${{ env.DEPLOYMENT_DIR }} || true
+        run: composer diagnose || true
 
       # @TODO check necessary scripts + add to summary
       - name: Composer install
+        working-directory: ${{ env.DEPLOYMENT_DIR }}
         id: composer_install
-        run: composer install --verbose --working-dir ${PWD}/${{ env.DEPLOYMENT_DIR }} ${{ env.COMPOSER_VERBOSE }}
+        run: composer install --verbose
           
       - name: Runnning Test(s)
         working-directory: ${{ env.DEPLOYMENT_DIR }}
