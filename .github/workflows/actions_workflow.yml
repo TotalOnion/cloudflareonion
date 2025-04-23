@@ -15,7 +15,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
+
+      - name: Setup the environment
+        run: |
+          DEPLOYMENT_DIR="`echo $GITHUB_REPOSITORY | awk -F '/' '{printf $2}'`"
+          echo "DEPLOYMENT_DIR=${DEPLOYMENT_DIR}"
+          echo "DEPLOYMENT_DIR=${DEPLOYMENT_DIR}" >> $GITHUB_ENV
+
+      - name: CheckOut Source Code
+        uses: actions/checkout@v3
+        continue-on-error: true
+        with:
+          ref: main
+          path: ${{ env.DEPLOYMENT_DIR }}
+          fetch-depth: 0
+          persist-credentials: true
+          set-safe-directory: true
+          submodules: 'recursive'
+          clean: true
+          
       - name: Runnning Test(s)
+        working-directory: ${{ env.DEPLOYMENT_DIR }}
         run: |
           ./vendor/bin/phpunit tests/
 
