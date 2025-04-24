@@ -3,6 +3,13 @@
     gap: 5px;
     margin-bottom: 1em;
 }
+.cfo-purge-container img {
+    height: 30px;
+}
+.cfo-purge-container .button {
+    display: flex;
+    align-items: center;
+}
 .cfo-loading {
     border: 16px solid #f3f3f3; /* Light grey */
     border-top: 16px solid #3498db; /* Blue */

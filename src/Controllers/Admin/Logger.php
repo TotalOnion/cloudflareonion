@@ -15,17 +15,26 @@ class Logger extends AbstractController
     private ?string $endpoint;
     private ?string $logGroup;
     private ?bool $loggingEnabled;
+    private ?bool $isInit;
 
     public function __construct()
     {
-        $this->setDates();
-        $this->setAccessKey();
-        $this->setSecretKey();
-        $this->setRegion();
-        $this->setHost();
-        $this->setEndpoint();
-        $this->setLogGroup();
-        $this->setLoggingEnabled();
+        $this->isInit = false;
+    }
+
+    private function initLogger(): void
+    {
+        if ( !this->isInit ) {
+            $this->setDates();
+            $this->setAccessKey();
+            $this->setSecretKey();
+            $this->setRegion();
+            $this->setHost();
+            $this->setEndpoint();
+            $this->setLogGroup();
+            $this->setLoggingEnabled();
+            $this->isInit = true;
+        }
     }
 
     public function logToAws($logLine): void
@@ -33,6 +42,8 @@ class Logger extends AbstractController
         if ( !$this->getLoggingEnabled() ) {
             return;
         }
+
+        $this->initLogger();
 
         $requestParameters = json_encode(['logGroupName' => $this->logGroup]);
 
