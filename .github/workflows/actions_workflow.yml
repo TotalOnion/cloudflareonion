@@ -13,11 +13,6 @@ env:
 jobs:
   build:
 
-    name: Actions Workflow ⚙️
-    container:
-      image: quay.io/pantheon-public/build-tools-ci:8.x-php8.2
-      options: --user root
-    permissions: write-all
     runs-on: ubuntu-latest
 
     steps:
@@ -47,7 +42,13 @@ jobs:
           echo "COMPOSER_AUTH<<EOF" >> $GITHUB_ENV
           echo "$TMP_COMPOSER_AUTH" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
-
+          
+      - name: Setup PHP with composer v2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          tools: "composer:${{ env.COMPOSER_VERSION }}"
+          
       - name: CheckOut Source Code
         uses: actions/checkout@v3
         continue-on-error: true
@@ -60,39 +61,6 @@ jobs:
           submodules: 'recursive'
           clean: true
 
-      - name: Composer Automatic install
-        id: composer_automatic_install
-        run: |
-          echo "Current version is: `composer --version`"
-
-          #DOC : https://getcomposer.org/doc/faqs/how-to-install-composer-programmatically.md
-          echo "Let's do an automatic install... "
-          wget https://raw.githubusercontent.com/composer/getcomposer.org/76a7060ccb93902cd7576b67264ad91c8a2700e2/web/installer -O - -q | php -- --quiet
-
-          echo ''
-          echo "New version is: `composer --version`"
-          echo ''
-          composer -n self-update ${{ env.COMPOSER_VERSION }} --ansi
-          echo ''
-          echo ''
-          composer diagnose --ansi || true
-
-          echo "➕`php --version`" >> $GITHUB_STEP_SUMMARY
-          echo "➕`composer --version`" >> $GITHUB_STEP_SUMMARY
-          echo "-------" >> $GITHUB_STEP_SUMMARY
-
-      - name: Cache composer global 💾
-        id: cache-composer-global
-        uses: actions/cache@v3
-        env:
-          cache_name: cache-composer-global-${{ hashFiles('composer.lock') }}
-          hash: ${{ hashFiles('composer.lock') }}
-        with:
-          path: ~/.composer
-          key: ${{ runner.os }}-build-${{ env.cache_name }}-${{ env.hash }}
-          restore-keys: ${{ runner.os }}-build-${{ env.cache_name }}
-          
-      # @TODO check necessary scripts + add to summary
       - name: Composer install
         working-directory: ${{ env.DEPLOYMENT_DIR }}
         id: composer_install
