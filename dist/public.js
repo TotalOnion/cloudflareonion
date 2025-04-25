@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
         allowEmpty: true
     });
 
-    let cfoMarkets = document.getElementById('cfo-purge-container').children;
+    let cfoMarkets = document.getElementById('cfo-purge-container')?.children;
     for (const cfoMarketButton of cfoMarkets) {
         cfoMarketButton.onclick = function () {
             if (confirm("Are you sure you want to clear the cache for " + cfoMarketButton.children[0].innerHTML)) {

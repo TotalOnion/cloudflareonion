@@ -225,10 +225,10 @@ class SettingsPage extends AbstractController
     private function registerOptionsFields()
     {
         add_settings_section(
-            GLOBAL_CFO_NAME.'_options_section_purge',  // Unique ID for the section
-            'Plugin Purge Settings',      // Title for the section
-            [$this, 'renderSectionIntro'],   // Callable function to echo the intro
-            GLOBAL_CFO_NAME.'settings-page'      // the page this section appears on (defined in registerPage above)
+            GLOBAL_CFO_NAME.'_options_section_purge',
+            'Plugin Purge Settings',
+            [$this, 'renderSectionIntro'],
+            GLOBAL_CFO_NAME.'settings-page'
         );
 
         add_option(GLOBAL_CFO_NAME.'_enableCF');
@@ -244,14 +244,39 @@ class SettingsPage extends AbstractController
             ]
         );
         add_settings_field(
-            GLOBAL_CFO_NAME.'_enableCF',   // id="" value
-            'Enable CF purging',          // <label> vale
-            [$this, 'renderField'],          // callback to actually do the rendering of the input
-            GLOBAL_CFO_NAME.'settings-page',     // Slug of the page to show this on (defined in registerPage above)
-            GLOBAL_CFO_NAME.'_options_section_purge',  // slug of the section the field appears in
-            [                                       // array of values to pass to the render callback
+            GLOBAL_CFO_NAME.'_enableCF',
+            'Enable CF purging',
+            [$this, 'renderField'],
+            GLOBAL_CFO_NAME.'settings-page',
+            GLOBAL_CFO_NAME.'_options_section_purge',
+            [
                 'id' => GLOBAL_CFO_NAME.'_enableCF',
                 'type' => 'checkbox'
+            ]
+        );
+
+
+        add_option(GLOBAL_CFO_NAME.'_replace_domain');
+        register_setting(
+            GLOBAL_CFO_NAME.'_options',
+            GLOBAL_CFO_NAME.'_replace_domain',
+            [
+                'type' => 'text',
+                'description' => 'Replace domain',
+                'sanitize_callback' => 'sanitize_text_field',
+                'show_in_rest' => true,
+                'default' => ''
+            ]
+        );
+        add_settings_field(
+            GLOBAL_CFO_NAME.'_replace_domain',
+            'Replace domain (leave empty for no replacing)',
+            [$this, 'renderField'],
+            GLOBAL_CFO_NAME.'settings-page',
+            GLOBAL_CFO_NAME.'_options_section_purge',
+            [
+                'id' => GLOBAL_CFO_NAME.'_replace_domain',
+                'type' => 'text'
             ]
         );
 

@@ -14,7 +14,8 @@
             "global-plugin-cfo\\": "/src"
         },
         "files": [
-            "src/Utils/functions.php"
+            "src/Utils/functions.php",
+            "src/Utils/crypt.php"
         ]
     },
     "autoload-dev": {

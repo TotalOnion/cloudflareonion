@@ -10,12 +10,14 @@ class CfoManager extends AbstractController
 
     public function __construct($pluginName, $version)
     {
-        $this->logger = new Logger(GLOBAL_CFO_VERSION, GLOBAL_CFO_NAME);
+        $this->logger = new Logger($version, $pluginName);
         parent::__construct($pluginName, $version);
     }
 
     public function registerSavedItem($url)
     {
+        $url = $this->getDomainReplacedURL($url);
+
         $this->sendPurgeRequest($this->getPurgeBodyUrl($url));
 
         if ($this->getTrailingSlashOption()) {
@@ -51,6 +53,18 @@ class CfoManager extends AbstractController
             ], JSON_UNESCAPED_SLASHES);
             return $this->sendPurgeRequest($body);
         }
+    }
+
+    public function getDomainReplacedURL($url): string
+    {
+        $newDomain = $this->getDomainReplace();
+        if ($newDomain) {
+            if($url){
+                $parsedURL = parse_url($url);
+                $url = $parsedURL['scheme']. '://' . $newDomain . $parsedURL['path'];
+            }
+        }
+        return $url;
     }
 
     private function sendPurgeRequest($body): string
@@ -108,5 +122,10 @@ class CfoManager extends AbstractController
     private function getPurgeEndpoint(): string
     {
        return 'https://api.cloudflare.com/client/v4/zones/' . $this->getZoneID() . '/purge_cache';
+    }
+
+    protected function getDomainReplace(): string
+    {
+        return get_option(GLOBAL_CFO_NAME.'_replace_domain');
     }
 }
