@@ -54,6 +54,9 @@ jobs:
       - name: 🔍 Listing the files to be modified
         id: search_code
         run: |
+
+          cat compose.json
+          
           SEARCH_CMD="grep -rni --exclude-dir={.git,vendor,.github} \"${{ env.UNDEFINED_VERSION }}\" ."
 
           echo "$SEARCH_CMD"
