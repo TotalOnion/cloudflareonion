@@ -5,8 +5,8 @@ description: Search the code for __GCFO_UNDEFINED_VERSION__ and replaces it with
 on:
   push:
     branches: [ wip-trigger ]
-  pull_request:
-    branches: [ wip, wip-trigger ]
+  # pull_request:
+  #   branches: [ wip, wip-trigger ]
 
 env:
     DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: true
@@ -58,12 +58,13 @@ jobs:
 
           # SEARCH_CMD="`grep -rni --exclude-dir={.git,vendor,.github} \"${{ env.UNDEFINED_VERSION }}\" .`"
 
-          echo "$SEARCH_CMD"
+
           
           # Continue only if we have something to modify
           if [[ -z "$SEARCH_CMD" ]]; then
             echo "No files containing ${{ env.UNDEFINED_VERSION }}"
           else
+            echo "$SEARCH_CMD"
             echo "modify_source=true" >> $GITHUB_OUTPUT
           fi
 
