@@ -1,6 +1,6 @@
 name: "Update version 🚀"
 
-## Description: Search the code for UNDEFINED_VERSION and replaces it with the deployed version.
+description: Search the code for __GCFO_UNDEFINED_VERSION__ and replaces it with the last release version.
 
 on:
   push:
@@ -53,7 +53,7 @@ jobs:
           
       - name: 🔍 Listing the files to be modified
         run: |
-          grep -rni --exclude-dir={.git,vendor,.github} "${{ env.UNDEFINED_VERSION }}" .
+          find . \( -path './.git' -o -path './.github' -o -path './vendor'\) -type f -exec grepo -l "${{ env.UNDEFINED_VERSION }}" {} +
 
       - name: ✨ Running the modification
         run: |
