@@ -1,0 +1,105 @@
+name: "Update version 🚀"
+
+## Description: Search the code for UNDEFINED_VERSION and replaces it with the deployed version.
+
+on:
+  push:
+  branches: [ "wip" ]
+  // # Triggers the workflow when a PR is closed (merged, or just closed)
+  // pull_request:
+  //   types: [ "closed" ]
+  //   branches: [ "master","main" ]
+
+jobs:
+  build:
+    name: Update version
+    runs-on: ubuntu-latest
+  
+    steps:
+  
+      - id: KeyDB
+        uses: pozetroninc/github-action-get-latest-release@master
+        with:
+          repository: ${{ github.repository }}
+          owner: JohnSully
+          repo: KeyDB
+          excludes: prerelease, draft
+
+      - name: Setup the environment
+        run: |
+          DEPLOYMENT_DIR="`echo $GITHUB_REPOSITORY | awk -F '/' '{printf $2}'`"
+          echo "DEPLOYMENT_DIR=${DEPLOYMENT_DIR}"
+          echo "DEPLOYMENT_DIR=${DEPLOYMENT_DIR}" >> $GITHUB_ENV
+
+          LAST_VERSION="`echo ${{ steps.keydb.outputs.release }}`"
+          echo "LAST_VERSION=${LAST_VERSION}"
+          echo "LAST_VERSION=${LAST_VERSION}" >> $GITHUB_ENV
+
+          # Please use __GCFO_UNDEFINED_VERSION__ in your code
+          TMP_UNDEFINED_VERSION="__GCFO_UNDEFINED_VERSION__"
+          echo "UNDEFINED_VERSION=${TMP_UNDEFINED_VERSION}"
+          echo "UNDEFINED_VERSION=${TMP_UNDEFINED_VERSION}" >> $GITHUB_ENV
+
+      - name: CheckOut Source Code
+        uses: actions/checkout@v3
+        continue-on-error: true
+        with:
+          ref: main
+          path: ${{ env.DEPLOYMENT_DIR }}
+          fetch-depth: 0
+          persist-credentials: true
+          set-safe-directory: true
+          submodules: 'recursive'
+          clean: true
+          
+      - name: Replace version in the code
+        working-directory: ${{ env.DEPLOYMENT_DIR }}
+        run: |
+          echo "🔍 Listing the files"
+          ls -ail ./
+
+          echo ""
+          echo "✅ cp global-cfo.php /tmp/new-global-cfo.php"
+          cp global-cfo.php /tmp/new-global-cfo.php
+
+          echo ""
+          echo "✅ sed -E "s/${UNDEFINED_VERSION}/${LAST_VERSION}/g" ./global-cfo.php > /tmp/new-global-cfo.php"
+          sed -E "s/${UNDEFINED_VERSION}/${LAST_VERSION}/g" ./global-cfo.php > /tmp/new-global-cfo.php
+
+          # echo ""
+          # echo "💾 cp /tmp/new-global-cfo.php global-cfo.php"
+          # cp /tmp/new-global-cfo.php global-cfo.php
+
+      - name: Is version is still undefined?
+        working-directory: ${{ env.DEPLOYMENT_DIR }}
+        run: |
+
+          cat ./global-cfo.php
+
+          TMP_CMD="grep -Frni \"${UNDEFINED_VERSION}\" --exclude-dir=.git"
+          echo "💡 Running => \"${TMP_CMD}\"" 
+
+          TMP_VERIFY_VERSION=$(echo -n `${TMP_CMD}`)
+
+          echo "RESULT:  ${TMP_VERIFY_VERSION}"
+
+          # if [[ ! -z "${TMP_VERIFY_VERSION}" ]]; then
+          #   echo "searching the codebase for ${UNDEFINED_VERSION}"
+          #   echo "-----MATCHES-----"
+          #   echo "$TMP_VERIFY_VERSION"
+          #   echo "-----END-----"
+          
+            # TMP_COUNT_VERSIONS="$(printf "%d\n" "$TMP_VERIFY_VERSION | wc -l")"
+
+            # echo "$TMP_COUNT_VERSIONS"
+
+            # if [[ ${TMP_COUNT_VERSIONS} > 0 ]]; then
+            #   TMP_MSG="Fail to replace all the ${UNDEFINED_VERSION} (find $TMP_COUNT_VERSIONS occurrences)"
+            #   echo "::error:: ${TMP_MSG}"
+            #   echo "➕ ${TMP_MSG}" >> $GITHUB_STEP_SUMMARY
+            #   exit 1
+            # fi
+
+          # else
+          #   echo "🎉 No occurrences found. Patching fully done."
+          # fi
