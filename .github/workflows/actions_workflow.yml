@@ -67,9 +67,9 @@ jobs:
         run: composer install --ansi --verbose
         
           
-      - name: Runnning Test(s)
-        run: |
-         ./vendor/bin/phpunit --colors tests/
+      # - name: Runnning Test(s)
+      #   run: |
+      #    ./vendor/bin/phpunit --colors tests/
 
       # - name: Runnning Test(s)
       #   run: |
@@ -78,11 +78,12 @@ jobs:
       #     tail -n 1000 output.log >> $GITHUB_STEP_SUMMARY
       #     echo '```' >> $GITHUB_STEP_SUMMARY
           
-      # - name: PHPUnit tests
-      #   uses: php-actions/phpunit@v3
-      #   with:
-      #     version: composer
-      #     php_version: ${{ env.PHP_VERSION }}
-      #     memory_limit: "256M"
+      - name: PHPUnit tests
+        uses: php-actions/phpunit@v3
+        with:
+          version: composer
+          configuration: phpunit.xml
+          php_version: ${{ env.PHP_VERSION }}
+          memory_limit: "256M"
 
           
