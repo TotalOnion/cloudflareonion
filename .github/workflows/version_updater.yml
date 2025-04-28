@@ -52,10 +52,12 @@ jobs:
           clean: true
           
       - name: 🔍 Listing the files to be modified
+        shell: bash
         run: |
-          find . \( -path './.git' -o -path './.github' -o -path './vendor'\) -type f -exec grepo -l "${{ env.UNDEFINED_VERSION }}" {} +
+          grep -rni --exclude-dir={.git,vendor,.github} "${{ env.UNDEFINED_VERSION }}" .
 
       - name: ✨ Running the modification
+        shell: bash
         run: |
           for file in `grep -rl --exclude-dir={.git,vendor,.github} "${{ env.UNDEFINED_VERSION }}" .`; do
             sed -i "s/${{ env.UNDEFINED_VERSION }}/${{ env.LAST_VERSION }}/g" $file
