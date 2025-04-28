@@ -1,6 +1,6 @@
 {
     "name": "totalonion/global-plugin-cfo",
-    "description": "CloudFlare things | __GCFO_UNDEFINED_VERSION__",
+    "description": "CloudFlare things | v0.0.7",
     "license": "MIT",
     "type": "wordpress-plugin",
     "repositories": [
