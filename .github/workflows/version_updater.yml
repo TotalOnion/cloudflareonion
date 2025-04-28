@@ -52,21 +52,23 @@ jobs:
           clean: true
           
       - name: 🔍 Listing the files to be modified
-        id: search-code
+        id: search_code
         run: |
           SEARCH_CMD="grep -rni --exclude-dir={.git,vendor,.github} \"${{ env.UNDEFINED_VERSION }}\" ."
-          echo "$SEARCH_CMD"
-          echo "search_code=$SEARCH_CMD" >> $GITHUB_OUTPUT
+          
+          if [[ -n "$SEARCH_CMD" ]]; then 
+            echo "modify_source=true" >> $GITHUB_OUTPUT
+          fi
           
       - name: ✨ Running the modification
-        if: ${{ steps.search-code.outputs.search_code != '' }}
+        if: ${{ steps.search_code.outputs.modify_source == true }}
         run: |
           for file in `grep -rl --exclude-dir={.git,vendor,.github} "${{ env.UNDEFINED_VERSION }}" .`; do
             sed -i "s/${{ env.UNDEFINED_VERSION }}/${{ env.LAST_VERSION }}/g" $file
           done
 
       - name: Commit and push changes
-        if: ${{ steps.search-code.outputs.search_code != '' }}
+        if: ${{ steps.search_code.outputs.modify_source == true }}
         uses: devops-infra/action-commit-push@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
