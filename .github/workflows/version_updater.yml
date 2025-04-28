@@ -70,14 +70,14 @@ jobs:
 
           
       - name: ✨ Running the modification
-        if: ${{ steps.search_code.outputs.modify_source == true }}
+        if: ${{ steps.search_code.outputs.modify_source == 'true' }}
         run: |
           for file in `grep -rl --exclude-dir={.git,vendor,.github} "${{ env.UNDEFINED_VERSION }}" .`; do
             sed -i "s/${{ env.UNDEFINED_VERSION }}/${{ env.LAST_VERSION }}/g" $file
           done
 
       - name: Commit and push changes
-        if: ${{ steps.search_code.outputs.modify_source == true }}
+        if: ${{ steps.search_code.outputs.modify_source == 'true' }}
         uses: devops-infra/action-commit-push@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
