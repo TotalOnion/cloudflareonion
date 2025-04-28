@@ -43,7 +43,7 @@ jobs:
           echo "$TMP_COMPOSER_AUTH" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
           
-      - name: Setup PHP with composer v2
+      - name: Setup PHP with Composer
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ env.PHP_VERSION }}
@@ -66,7 +66,7 @@ jobs:
           
       - name: Runnning Test(s)
         run: |
-         composer run-tests | tee output.log
+         phpunit tests/ | tee output.log
           echo '```' >> $GITHUB_STEP_SUMMARY
           tail -n 1000 output.log >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
