@@ -23,6 +23,11 @@
             "Tests\\": "/tests"
         }
     },
+    "scripts": {
+        "run-tests": [
+            "phpunit --colors=always tests/"
+        ]
+    },
     "require": {
         "composer/installers": "~1.0"
     },
