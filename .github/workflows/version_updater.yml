@@ -41,7 +41,7 @@ jobs:
           echo "UNDEFINED_VERSION=${TMP_UNDEFINED_VERSION}" >> $GITHUB_ENV
 
       - name: CheckOut Source Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         continue-on-error: true
         with:
           ref: wip
@@ -55,6 +55,8 @@ jobs:
         id: search_code
         run: |
           SEARCH_CMD="grep -rni --exclude-dir={.git,vendor,.github} \"${{ env.UNDEFINED_VERSION }}\" ."
+
+          echo "$SEARCH_CMD"
           
           # Continue only if we have something to modify
           if [[ -n "$SEARCH_CMD" ]]; then 
