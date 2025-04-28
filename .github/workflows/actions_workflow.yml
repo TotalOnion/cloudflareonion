@@ -23,9 +23,9 @@ jobs:
           echo "COMPOSER_VERSION=${TMP_COMPOSER_VERSION}"
           echo "COMPOSER_VERSION=${TMP_COMPOSER_VERSION}" >> $GITHUB_ENV
           
-          DEPLOYMENT_DIR="`echo $GITHUB_REPOSITORY | awk -F '/' '{printf $2}'`"
-          echo "DEPLOYMENT_DIR=${DEPLOYMENT_DIR}"
-          echo "DEPLOYMENT_DIR=${DEPLOYMENT_DIR}" >> $GITHUB_ENV
+          # DEPLOYMENT_DIR="`echo $GITHUB_REPOSITORY | awk -F '/' '{printf $2}'`"
+          # echo "DEPLOYMENT_DIR=${DEPLOYMENT_DIR}"
+          # echo "DEPLOYMENT_DIR=${DEPLOYMENT_DIR}" >> $GITHUB_ENV
 
       - name: Populate composer_auth
         id: set_composer_auth
@@ -54,7 +54,6 @@ jobs:
         continue-on-error: true
         with:
           ref: main
-          path: ${{ env.DEPLOYMENT_DIR }}
           fetch-depth: 0
           persist-credentials: true
           set-safe-directory: true
@@ -62,7 +61,6 @@ jobs:
           clean: true
 
       - name: Composer install
-        working-directory: ${{ env.DEPLOYMENT_DIR }}
         id: composer_install
         run: composer install --ansi --verbose
           
@@ -77,7 +75,6 @@ jobs:
       - name: PHPUnit tests
         uses: php-actions/phpunit@v3
         with:
-          configuration: "${{ env.DEPLOYMENT_DIR }}/phpunit.xml"
           version: composer
           php_version: ${{ env.PHP_VERSION }}
           memory_limit: "256M"
