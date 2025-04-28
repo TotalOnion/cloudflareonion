@@ -66,7 +66,10 @@ jobs:
       - name: Composer install
         run: composer install --ansi --verbose
         
-          
+              
+      - name: PHPUnit tests
+        uses: php-actions/phpunit@v3
+        
       # - name: Runnning Test(s)
       #   run: |
       #    ./vendor/bin/phpunit --colors tests/
@@ -83,9 +86,8 @@ jobs:
       #   with:
       #     php_version: "8.2"
       #     php_extensions: soap intl gd
-          
-      - name: PHPUnit tests
-        uses: php-actions/phpunit@v3
+
+
 
 
           
