@@ -48,21 +48,22 @@ jobs:
           fetch-depth: 0
           persist-credentials: true
           set-safe-directory: true
-          submodules: 'recursive'
           clean: true
           
       - name: 🔍 Listing the files to be modified
         id: search_code
         run: |
 
-         SEARCH_CMD="`cat composer.json`"
+          SEARCH_CMD="`cat composer.json`"
 
-          # SEARCH_CMD="grep -rni --exclude-dir={.git,vendor,.github} \"${{ env.UNDEFINED_VERSION }}\" ./"
+          # SEARCH_CMD="`grep -rni --exclude-dir={.git,vendor,.github} \"${{ env.UNDEFINED_VERSION }}\" .`"
 
           echo "$SEARCH_CMD"
           
           # Continue only if we have something to modify
-          if [[ -n "$SEARCH_CMD" ]]; then 
+          if [[ -z "$SEARCH_CMD" ]]; then
+            echo "No files containing ${{ env.UNDEFINED_VERSION }}"
+          else
             echo "modify_source=true" >> $GITHUB_OUTPUT
           fi
 
