@@ -60,22 +60,29 @@ jobs:
           submodules: 'recursive'
           clean: true
 
+      - name: Validate composer.json and composer.lock
+        run: composer validate --strict
+
       - name: Composer install
-        id: composer_install
         run: composer install --ansi --verbose
+        
           
       - name: Runnning Test(s)
         run: |
-         ./vendor/bin/phpunit --colors tests/ | tee output.log
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          tail -n 1000 output.log >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
+         ./vendor/bin/phpunit --colors tests/
 
-      - name: PHPUnit tests
-        uses: php-actions/phpunit@v3
-        with:
-          version: composer
-          php_version: ${{ env.PHP_VERSION }}
-          memory_limit: "256M"
+      # - name: Runnning Test(s)
+      #   run: |
+      #    ./vendor/bin/phpunit --colors tests/ | tee output.log
+      #     echo '```' >> $GITHUB_STEP_SUMMARY
+      #     tail -n 1000 output.log >> $GITHUB_STEP_SUMMARY
+      #     echo '```' >> $GITHUB_STEP_SUMMARY
+          
+      # - name: PHPUnit tests
+      #   uses: php-actions/phpunit@v3
+      #   with:
+      #     version: composer
+      #     php_version: ${{ env.PHP_VERSION }}
+      #     memory_limit: "256M"
 
           
