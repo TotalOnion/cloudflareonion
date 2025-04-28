@@ -53,11 +53,11 @@ jobs:
           
       - name: 🔍 Listing the files to be modified
         run: |
-          grep -rni --exclude-dir={.git,vendor} "${{ env.UNDEFINED_VERSION }}" .
+          grep -rni --exclude-dir={.git,vendor,.github} "${{ env.UNDEFINED_VERSION }}" .
 
       - name: ✨ Running the modification
         run: |
-          for file in `grep -rl --exclude-dir={.git,vendor} "${{ env.UNDEFINED_VERSION }}" .`; do
+          for file in `grep -rl --exclude-dir={.git,vendor,.github} "${{ env.UNDEFINED_VERSION }}" .`; do
             sed -i "s/${{ env.UNDEFINED_VERSION }}/${{ env.LAST_VERSION }}/g" $file
           done
 
