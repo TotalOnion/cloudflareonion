@@ -8,6 +8,7 @@ env:
    DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: true
    FORCE_COLOR: true
    TERM: xterm-256color
+   PHP_VERSION: '8.4'
 
 jobs:
   build:
@@ -45,7 +46,7 @@ jobs:
       - name: Setup PHP with composer v2
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.4'
+          php-version: ${{ env.PHP_VERSION }}
           tools: "composer:${{ env.COMPOSER_VERSION }}"
           
       - name: CheckOut Source Code
@@ -65,13 +66,20 @@ jobs:
         id: composer_install
         run: composer install --ansi --verbose
           
-      - name: Runnning Test(s)
-        working-directory: ${{ env.DEPLOYMENT_DIR }}
-        run: |
-         ./vendor/bin/phpunit --colors tests/ 2>&1 | tee output.log
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          tail -n 1000 output.log >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          
+      # - name: Runnning Test(s)
+      #   working-directory: ${{ env.DEPLOYMENT_DIR }}
+      #   run: |
+      #    ./vendor/bin/phpunit --colors tests/ 2>&1 | tee output.log
+      #     echo '```' >> $GITHUB_STEP_SUMMARY
+      #     tail -n 1000 output.log >> $GITHUB_STEP_SUMMARY
+      #     echo '```' >> $GITHUB_STEP_SUMMARY
+
+      - name: PHPUnit tests
+        uses: php-actions/phpunit@v3
+        with:
+          configuration: "${{ env.DEPLOYMENT_DIR }}/phpunit.xml"
+          version: composer
+          php_version: ${{ env.PHP_VERSION }}
+          memory_limit: "256M"
 
           
