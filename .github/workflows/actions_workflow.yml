@@ -64,13 +64,12 @@ jobs:
         id: composer_install
         run: composer install --ansi --verbose
           
-      # - name: Runnning Test(s)
-      #   working-directory: ${{ env.DEPLOYMENT_DIR }}
-      #   run: |
-      #    ./vendor/bin/phpunit --colors tests/ 2>&1 | tee output.log
-      #     echo '```' >> $GITHUB_STEP_SUMMARY
-      #     tail -n 1000 output.log >> $GITHUB_STEP_SUMMARY
-      #     echo '```' >> $GITHUB_STEP_SUMMARY
+      - name: Runnning Test(s)
+        run: |
+         composer run-tests | tee output.log
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          tail -n 1000 output.log >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
 
       - name: PHPUnit tests
         uses: php-actions/phpunit@v3
