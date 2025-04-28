@@ -4,9 +4,9 @@ description: Search the code for __GCFO_UNDEFINED_VERSION__ and replaces it with
 
 on:
   push:
-    branches: [ wip ]
-  # pull_request:
-  #   branches: [ main, master ]
+    branches: [ wip-trigger ]
+  pull_request:
+    branches: [ wip, wip-trigger ]
 
 env:
     DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: true
@@ -62,7 +62,7 @@ jobs:
           if [[ -n "$SEARCH_CMD" ]]; then 
             echo "modify_source=true" >> $GITHUB_OUTPUT
           fi
-          
+
           
       - name: ✨ Running the modification
         if: ${{ steps.search_code.outputs.modify_source == true }}
