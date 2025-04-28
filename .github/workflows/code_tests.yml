@@ -1,8 +1,10 @@
-name: "Actions Workflow 🚀"
+name: "Code tests 🚀"
 
 on:
+  push:
+    branches: [ main, master ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ main, master ]
 
 env:
    DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: true
@@ -60,8 +62,9 @@ jobs:
 
       - name: Composer install
         run: composer install --ansi --verbose
-        
-      - name: Runnning PHPUnit tests
-        uses: php-actions/phpunit@v3
 
-          
+      - name: Running PHPUnit Tests
+        run: composer run-tests
+        
+      # - name: Runnning PHPUnit tests
+      #   uses: php-actions/phpunit@v4
