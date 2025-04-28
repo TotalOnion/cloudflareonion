@@ -55,9 +55,9 @@ jobs:
         id: search_code
         run: |
 
-          cat composer.json
+         SEARCH_CMD="cat composer.json"
 
-          SEARCH_CMD="grep -rni --exclude-dir={.git,vendor,.github} \"${{ env.UNDEFINED_VERSION }}\" ."
+          # SEARCH_CMD="grep -rni --exclude-dir={.git,vendor,.github} \"${{ env.UNDEFINED_VERSION }}\" ./"
 
           echo "$SEARCH_CMD"
           
