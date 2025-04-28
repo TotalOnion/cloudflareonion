@@ -51,12 +51,12 @@ jobs:
           submodules: 'recursive'
           clean: true
           
-      - name: Replace version in the code
+      - name: 🔍 Listing the files to be modified
         run: |
-          echo "🔍 Listing the files to be modified"
           grep -rni --exclude-dir={.git,vendor} "${{ env.UNDEFINED_VERSION }}" .
 
-          echo "✨ Running the modification"
+      - name: ✨ Running the modification
+        run: |
           for file in `grep -rl --exclude-dir={.git,vendor} "${{ env.UNDEFINED_VERSION }}" .`; do
             sed -i "s/${{ env.UNDEFINED_VERSION }}/${{ env.LAST_VERSION }}/g" $file
           done
