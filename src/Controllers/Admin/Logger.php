@@ -24,7 +24,7 @@ class Logger extends AbstractController
 
     private function initLogger(): void
     {
-        if ( !this->isInit ) {
+        if ( !$this->isInit ) {
             $this->setDates();
             $this->setAccessKey();
             $this->setSecretKey();
@@ -39,11 +39,12 @@ class Logger extends AbstractController
 
     public function logToAws($logLine): void
     {
+
+        $this->initLogger();
+
         if ( !$this->getLoggingEnabled() ) {
             return;
         }
-
-        $this->initLogger();
 
         $requestParameters = json_encode(['logGroupName' => $this->logGroup]);
 
