@@ -16,8 +16,6 @@ class CfoManager extends AbstractController
 
     public function registerSavedItem($url)
     {
-        $url = $this->getDomainReplacedURL($url);
-
         $this->sendPurgeRequest($this->getPurgeBodyUrl($url));
 
         if ($this->getTrailingSlashOption()) {
@@ -46,12 +44,31 @@ class CfoManager extends AbstractController
     public function purgeMarket($marketId)
     {
         $marketURL = cfoGetWPMLLanguageById($marketId)['url'];
-        if($marketURL) {
-            $marketURI = parse_url($marketURL, PHP_URL_HOST) . parse_url($marketURL, PHP_URL_PATH);
-            $body = json_encode([
-                'prefixes' => [$marketURI]
-            ], JSON_UNESCAPED_SLASHES);
+        if ($marketURL) {
+            $body = $this->getPurgeBodyPrefix($marketURL);
             return $this->sendPurgeRequest($body);
+        }
+    }
+
+    public function purgePrefix($prefix)
+    {
+        if ($prefix) {
+            $fullURL = home_url() . $prefix;
+            $body = $this->getPurgeBodyPrefix($fullURL);
+            return $this->sendPurgeRequest($body);
+        }
+    }
+
+    public function purgeMarkets()
+    {
+        if ( in_array( 'sitepress-multilingual-cms/sitepress.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
+            $languages = apply_filters( 'wpml_active_languages', NULL );
+            foreach ($languages as $language) {
+                $this->purgeMarket($language['id']);
+            }
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -59,7 +76,7 @@ class CfoManager extends AbstractController
     {
         $newDomain = $this->getDomainReplace();
         if ($newDomain) {
-            if($url){
+            if ($url){
                 $parsedURL = parse_url($url);
                 $url = $parsedURL['scheme']. '://' . $newDomain . $parsedURL['path'];
             }
@@ -87,9 +104,20 @@ class CfoManager extends AbstractController
 
     private function getPurgeBodyUrl($url): string
     {
+        $url = $this->getDomainReplacedURL($url);
         $body = json_encode([
             'files' => [$url]
         ]);
+        return $body;
+    }
+
+    private function getPurgeBodyPrefix($url): string
+    {
+        $url = $this->getDomainReplacedURL($url);
+        $uri = parse_url($url, PHP_URL_HOST) . parse_url($url, PHP_URL_PATH);
+        $body = json_encode([
+            'prefixes' => [$uri]
+        ], JSON_UNESCAPED_SLASHES);
         return $body;
     }
 
