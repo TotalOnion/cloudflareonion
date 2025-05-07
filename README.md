@@ -67,3 +67,19 @@ ln -s /My-Versions/cloudflareonion /app/web/wp-content/plugins/prcfx
 # TODO 
 
 - Removes dev files at release (docker, dev, ...)
+
+
+=======
+### Commands
+
+This plugin creates multiple commands to be used through WP CLI
+
+```bash
+# Purge by prefix
+wp cfo purgeprefix '/en/prefix/'
+# Purge all markets
+wp cfo purgemarkets
+
+# Inside the env if using lando !
+lando wp cfo ####
+```

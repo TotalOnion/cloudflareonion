@@ -1,5 +1,5 @@
 <?php
-define('GLOBAL_CFO_VERSION', '0.0.10');
+define('GLOBAL_CFO_VERSION', '0.0.11');
 define('GLOBAL_CFO_NAME', 'global-cfo');
 define('GLOBAL_CFO_NAMESPACE', 'GlobalCfo');
 define('GLOBAL_CFO_PLUGIN_FOLDER', __DIR__);

@@ -111,6 +111,12 @@ class GlobalCfo {
         $API = new Admin\CfoAPI($this->getPluginName(), $this->getVersion(), $cfoManager);
         $this->loader->addAction('rest_api_init', $API, 'registerEndpoints');
 
+        // Add the commands
+        if ( defined( 'WP_CLI' ) && WP_CLI ) {
+            $command = new Admin\CfoCommand($this->getPluginName(), $this->getVersion(), $cfoManager);
+            \WP_CLI::add_command( 'cfo', $command );
+        }
+
         // Enqueue scripts
         $enqueue = new Frontend\Enqueue($this->getPluginName(), $this->getVersion());
         $this->loader->addAction('admin_enqueue_scripts', $enqueue, 'enqueueScripts');
