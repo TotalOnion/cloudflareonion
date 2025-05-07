@@ -24,6 +24,27 @@ Running the tests
 ./vendor/bin/phpunit tests/phpunit/Utils/FunctionsTest.php
 ```
 
+# Development environment: 
+
+```bash
+# Start container
+docker-compose up -d
+
+# Start (with view on the build logs)
+docker-compose up --build
+
+# Stop container 
+docker-compose down -v
+
+# Start a shell 
+docker exec -it gcms-cloudflareonion bash
+
+# Complete the creation of your environment (if it doesn't happen automagically)
+docker exec -it gcms-cloudflareonion "/docker-entrypoint.sh"
+```
+Visit: http://127.0.0.1:8081
+
+
 # Doc(s)
 - [ Manipulate the plugin via Terminus ](https://pernod-ricard.atlassian.net/wiki/spaces/IR/pages/30078019394/03_Terminus+Important+commands#Plugin-management-via-Terminus)
 
@@ -43,6 +64,12 @@ ln -sf /My-Versions/cloudflareonion global-plugin-cfo
 ln -s /My-Versions/cloudflareonion /app/web/wp-content/plugins/prcfx 
 ```
 
+# TODO 
+
+- Removes dev files at release (docker, dev, ...)
+
+
+=======
 ### Commands
 
 This plugin creates multiple commands to be used through WP CLI
