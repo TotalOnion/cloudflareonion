@@ -31,12 +31,7 @@
         }
 
         // Check for invalid URL path characters
-        if (preg_match('/[<>"\{\}\|\\\^\[\]`]/', $decoded)) {
-            return false;
-        }
-
-        // Reject non ascii characters
-        if (preg_match('/[^\x01-\x7F]/', $decoded)) {
+        elseif (preg_match('/[<>"\{\}\|\\\^\[\]`]/', $decoded)) {
             return false;
         }
 
