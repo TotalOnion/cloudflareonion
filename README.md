@@ -41,7 +41,11 @@ docker exec -it gcms-cloudflareonion bash
 
 # Complete the creation of your environment (if it doesn't happen automagically)
 docker exec -it gcms-cloudflareonion "/docker-entrypoint.sh"
+
+# Running tests
+composer run-tests --working-dir=./wp-content/plugins/
 ```
+
 Visit: http://127.0.0.1:8081
 
 
