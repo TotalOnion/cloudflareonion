@@ -80,6 +80,7 @@ jobs:
 
       - name: 🔍 Listing the files to be modified
         id: test
+        shell: bash
         run: |
           ls -ail ./
           grep -ri --exclude-dir={.git,vendor,.github} \"${{ env.UNDEFINED_VERSION }}\" \.
