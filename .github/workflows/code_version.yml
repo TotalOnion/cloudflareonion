@@ -89,7 +89,7 @@ jobs:
       - name: 🔍 Listing the files to be modified
         id: search_code
         run: |
-          SEARCH_CMD="`grep -rni --exclude-dir={.git,vendor,.github} \"${{ env.UNDEFINED_VERSION }}\" .` || true"
+          SEARCH_CMD=$(grep -rni --exclude-dir={.git,vendor,.github} \"${{ env.UNDEFINED_VERSION }}\" . || echo -e "\0")
           
           # Continue only if we have something to modify
           if [[ -z "$SEARCH_CMD" ]]; then
