@@ -1,0 +1,105 @@
+name: "Auto update the version 🚀"
+
+# description: Search the code for __GCFO_UNDEFINED_VERSION__ and replaces it with the last release version.
+
+on:
+  push:
+    branches: [ versionning ]
+
+concurrency: production
+
+jobs:
+  build:
+    name: Update version
+    runs-on: ubuntu-latest
+  
+    steps:
+  
+      # - id: KeyDB
+      #   uses: pozetroninc/github-action-get-latest-release@master
+      #   with:
+      #     repository: ${{ github.repository }}
+      #     owner: JohnSully
+      #     repo: KeyDB
+      #     excludes: draft
+
+      - name: Setup the environment
+        run: |
+
+          # Please use __GCFO_UNDEFINED_VERSION__ in your code
+          TMP_UNDEFINED_VERSION="__GCFO_UNDEFINED_VERSION__"
+          echo "UNDEFINED_VERSION=${TMP_UNDEFINED_VERSION}"
+          echo "UNDEFINED_VERSION=${TMP_UNDEFINED_VERSION}" >> $GITHUB_ENV
+
+      - name: CheckOut Source Code
+        uses: actions/checkout@v4
+        # continue-on-error: true
+        with:
+          # ref: main
+          fetch-depth: '0'
+          # persist-credentials: true
+          # set-safe-directory: true
+          clean: true
+
+      - name: Minor version for each merge
+        id: taggerDryRun
+        uses: anothrNick/github-tag-action@1.36.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+          DRY_RUN: true
+  
+      - name: echo new tag
+        run: |
+          echo "The next tag version will be: ${{ steps.taggerDryRun.outputs.new_tag }}"
+      - name: echo tag
+        run: |
+          echo "The current tag is: ${{ steps.taggerDryRun.outputs.tag }}"
+      - name: echo part
+        run: |
+          echo "The version increment was: ${{ steps.taggerDryRun.outputs.part }}"
+
+
+    # DO MY BUILD HERE
+    # IN CASE OF FAILURE, THE STEP BELOW WILL NOT RUN.
+          
+
+
+
+          
+      - name: 🔍 Listing the files to be modified
+        id: search_code
+        run: |
+          SEARCH_CMD="`grep -rni --exclude-dir={.git,vendor,.github} \"${{ env.UNDEFINED_VERSION }}\" .`"
+          
+          # Continue only if we have something to modify
+          if [[ -z "$SEARCH_CMD" ]]; then
+            echo "No files containing ${{ env.UNDEFINED_VERSION }}"
+          else
+            echo "$SEARCH_CMD"
+            echo "modify_source=true" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: ✨ Running the modification
+        if: ${{ steps.search_code.outputs.modify_source == 'true' }}
+        run: |
+          for file in `grep -rl --exclude-dir={.git,vendor,.github} "${{ env.UNDEFINED_VERSION }}" .`; do
+            sed -i "s/${{ env.UNDEFINED_VERSION }}/${{ steps.taggerDryRun.outputs.new_tag }}/g" $file
+          done
+
+      - name: Commit and push changes
+        if: ${{ steps.search_code.outputs.modify_source == 'true' }}
+        uses: devops-infra/action-commit-push@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          commit_message: "(pipeline) Update project version: ${{ steps.taggerDryRun.outputs.new_tag }}"
+
+
+
+
+      - name: Minor version for each merge
+        id: taggerFinal
+        uses: anothrNick/github-tag-action@1.36.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
