@@ -3,17 +3,18 @@ name: "Auto update the version 🚀"
 # Search the code for __GCFO_UNDEFINED_VERSION__ and replaces it with the last release version.
 # For intentional version from the commit messages use: #major, #minor, #patch, #none
 
-# on:
-#   pull_request:
-#     types:
-#       - closed
-#     branches:
-#       - master
-
-
 on:
-  push:
-    branches: [ versionning ]
+  pull_request:
+    types:
+      - open
+      # - closed
+    branches:
+      - versionning
+
+
+# on:
+#   push:
+#     branches: [ versionning ]
 
 concurrency: production
 
