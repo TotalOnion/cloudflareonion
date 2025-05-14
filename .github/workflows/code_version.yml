@@ -78,40 +78,40 @@ jobs:
     # IN CASE OF FAILURE, THE STEP BELOW WILL NOT RUN.
           
 
-      - name: 🔍 Listing the files to be modified
-        id: test
-        shell: bash
-        run: |
-          ls -ail ./
-          grep -ri --exclude-dir={.git,vendor,.github} \"${{ env.UNDEFINED_VERSION }}\" \.
-
-          
       # - name: 🔍 Listing the files to be modified
-      #   id: search_code
+      #   id: test
+      #   shell: bash
       #   run: |
-      #     SEARCH_CMD="`grep -rni --exclude-dir={.git,vendor,.github} \"${{ env.UNDEFINED_VERSION }}\" .`"
-          
-      #     # Continue only if we have something to modify
-      #     if [[ -z "$SEARCH_CMD" ]]; then
-      #       echo "No files containing ${{ env.UNDEFINED_VERSION }}"
-      #     else
-      #       echo "$SEARCH_CMD"
-      #       echo "modify_source=true" >> $GITHUB_OUTPUT
-      #     fi
-          
-      # - name: ✨ Running the modification
-      #   if: ${{ steps.search_code.outputs.modify_source == 'true' }}
-      #   run: |
-      #     for file in `grep -rl --exclude-dir={.git,vendor,.github} "${{ env.UNDEFINED_VERSION }}" .`; do
-      #       sed -i "s/${{ env.UNDEFINED_VERSION }}/${{ steps.taggerDryRun.outputs.new_tag }}/g" $file
-      #     done
+      #     ls -ail ./
+      #     grep -ri --exclude-dir={.git,vendor,.github} \"${{ env.UNDEFINED_VERSION }}\" \.
 
-      # - name: Commit and push changes
-      #   if: ${{ steps.search_code.outputs.modify_source == 'true' }}
-      #   uses: devops-infra/action-commit-push@master
-      #   with:
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
-      #     commit_message: "(pipeline) Version update: ${{ steps.taggerDryRun.outputs.tag }} => ${{ steps.taggerDryRun.outputs.new_tag }} (${{ steps.taggerDryRun.outputs.part }})"
+          
+      - name: 🔍 Listing the files to be modified
+        id: search_code
+        run: |
+          SEARCH_CMD="`grep -rni --exclude-dir={.git,vendor,.github} \"${{ env.UNDEFINED_VERSION }}\" .` || echo -e '\0'"
+          
+          # Continue only if we have something to modify
+          if [[ -z "$SEARCH_CMD" ]]; then
+            echo "No files containing ${{ env.UNDEFINED_VERSION }}"
+          else
+            echo "$SEARCH_CMD"
+            echo "modify_source=true" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: ✨ Running the modification
+        if: ${{ steps.search_code.outputs.modify_source == 'true' }}
+        run: |
+          for file in `grep -rl --exclude-dir={.git,vendor,.github} "${{ env.UNDEFINED_VERSION }}" .`; do
+            sed -i "s/${{ env.UNDEFINED_VERSION }}/${{ steps.taggerDryRun.outputs.new_tag }}/g" $file
+          done
+
+      - name: Commit and push changes
+        if: ${{ steps.search_code.outputs.modify_source == 'true' }}
+        uses: devops-infra/action-commit-push@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          commit_message: "(pipeline) Version update: ${{ steps.taggerDryRun.outputs.tag }} => ${{ steps.taggerDryRun.outputs.new_tag }} (${{ steps.taggerDryRun.outputs.part }})"
 
 
 
