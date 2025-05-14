@@ -1,5 +1,6 @@
 # What is it?
 
+
 An blank boilerplate plugin, structured a bit more like a big-boy project; namespaces, autoloader, a (basic) renderer, Exceptions.
 
 Ready for composer, and with webpack added in and configured to generate separate js & css for the frontend and admin areas.
