@@ -82,7 +82,7 @@ jobs:
         id: test
         run: |
           ls -ail ./
-          grep -rni --exclude-dir={.git,vendor,.github} \"${{ env.UNDEFINED_VERSION }}\" \.
+          grep -ri --exclude-dir={.git,vendor,.github} \"${{ env.UNDEFINED_VERSION }}\" \.
 
           
       # - name: 🔍 Listing the files to be modified
