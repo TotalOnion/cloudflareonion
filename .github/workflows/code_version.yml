@@ -1,6 +1,15 @@
 name: "Auto update the version 🚀"
 
-# description: Search the code for __GCFO_UNDEFINED_VERSION__ and replaces it with the last release version.
+# Search the code for __GCFO_UNDEFINED_VERSION__ and replaces it with the last release version.
+# For intentional version from the commit messages use: #major, #minor, #patch, #none
+
+# on:
+#   pull_request:
+#     types:
+#       - closed
+#     branches:
+#       - master
+
 
 on:
   push:
@@ -10,6 +19,9 @@ concurrency: production
 
 jobs:
   build:
+  
+    if: github.event.pull_request.merged == true
+    
     name: Update version
     runs-on: ubuntu-latest
   
@@ -43,11 +55,12 @@ jobs:
 
       - name: Minor version for each merge
         id: taggerDryRun
-        uses: anothrNick/github-tag-action@1.36.0
+        uses: anothrNick/github-tag-action@1.73.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          WITH_V: true
+          TAG_PREFIX: ''
           DRY_RUN: true
+          INITIAL_VERSION: '0.0.12'
   
       - name: echo new tag
         run: |
@@ -92,14 +105,16 @@ jobs:
         uses: devops-infra/action-commit-push@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          commit_message: "(pipeline) Update project version: ${{ steps.taggerDryRun.outputs.new_tag }}"
+          commit_message: "(pipeline) Version update: ${{ steps.taggerDryRun.outputs.tag }} => ${{ steps.taggerDryRun.outputs.new_tag }} (${{ steps.taggerDryRun.outputs.part }})"
+
 
 
 
 
       - name: Minor version for each merge
         id: taggerFinal
-        uses: anothrNick/github-tag-action@1.36.0
+        uses: anothrNick/github-tag-action@1.73.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          WITH_V: true
+          TAG_PREFIX: ''
+          DRY_RUN: true
