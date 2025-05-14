@@ -54,14 +54,15 @@ jobs:
           # set-safe-directory: true
           clean: true
 
-      - name: Minor version for each merge
-        id: taggerDryRun
-        uses: anothrNick/github-tag-action@1.73.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG_PREFIX: ''
-          DRY_RUN: true
-          INITIAL_VERSION: '0.0.12'
+      # - name: Minor version for each merge
+      #   id: taggerDryRun
+      #   uses: anothrNick/github-tag-action@1.73.0
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     TAG_PREFIX: ''
+      #     DRY_RUN: true
+      #     INITIAL_VERSION: '0.0.12'
+      #     PRERELEASE: true
   
       - name: echo new tag
         run: |
@@ -116,7 +117,15 @@ jobs:
 
 
 
-
+      - name: Minor version for each merge
+        id: taggerDryRun
+        uses: anothrNick/github-tag-action@1.73.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG_PREFIX: ''
+          DRY_RUN: true
+          INITIAL_VERSION: '0.0.12'
+          PRERELEASE: true
 
       # - name: Minor version for each merge
       #   id: taggerFinal
