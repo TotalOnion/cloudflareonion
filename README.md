@@ -1,7 +1,8 @@
+> [!NOTE]
+> __Version:__ v0.1.0-beta.4
+
+
 # What is it?
-
-__Version:__ v0.1.0-beta.4
-
 
 An blank boilerplate plugin, structured a bit more like a big-boy project; namespaces, autoloader, a (basic) renderer, Exceptions.
 
