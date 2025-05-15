@@ -1,3 +1,5 @@
+> __LATEST TAG:__ __GCFO_UNDEFINED_VERSION__
+
 # What is it?
 
 An blank boilerplate plugin, structured a bit more like a big-boy project; namespaces, autoloader, a (basic) renderer, Exceptions.
