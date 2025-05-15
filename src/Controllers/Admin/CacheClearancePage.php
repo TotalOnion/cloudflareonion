@@ -119,7 +119,7 @@ class CacheClearancePage extends AbstractController
                 add_settings_error(
                     'field_path_validator',
                     'invalid_paths',
-                    "Sending '${url}' to Cloudflare for clearance",
+                    "Sending '{$url}' to Cloudflare for clearance",
                     'warning'
                 );
 
