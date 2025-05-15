@@ -70,7 +70,7 @@ final class FunctionsTest extends TestCase
                 '/[claude]/m/a/b/c',
                 false
             ],
-            'Paths with invalid characters are not accepted'       => [
+            'Paths with invalid characters are not accepted [2]'   => [
                 '/{claude}/<>/a/b/c',
                 false
             ],
@@ -94,7 +94,7 @@ final class FunctionsTest extends TestCase
     public static function isValidPathProvider(): array
     {
         return [
-            'Accept valid path'   => [
+            'Accept encoded path'   => [
                 '/ko-kr/range/%EB%B0%9C%EB%A0%8C%ED%83%80%EC%9D%B87%EB%85%84-%EB%B2%84%EB%B2%88%ED%94%BC%EB%8B%88%EC%89%AC/',
                 true
             ],
@@ -110,7 +110,7 @@ final class FunctionsTest extends TestCase
                 '/zh-cn/条款和条件/',
                 true
             ],
-            'Reject non latin paths [2]'    => [
+            'Accept non latin paths [2]'    => [
                 '/zh-cn/إسرائيل/',
                 true
             ],
@@ -118,11 +118,11 @@ final class FunctionsTest extends TestCase
                 '/zh-cn/<hello></hello>',
                 false
             ],
-            'Reject path with non ascii characters'    => [
+            'Accept path with non ascii characters'    => [
                 '/en/AC/Ææ½⅓¼⅕⅙⅐⅛⅑/',
                 true
             ],
-            'Reject path with non ascii characters [2]'    => [
+            'Accept path with non ascii characters [2]'    => [
                 '/en/Düsseldorf/Köln-Москва-!@#$/',
                 true
             ],
