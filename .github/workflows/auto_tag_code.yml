@@ -1,0 +1,118 @@
+name: Auto update the tags 🛠
+
+# Search the code for __GCFO_UNDEFINED_VERSION__ and replaces it with the last release version.
+#
+# Automatically craft a new tag (according to the commits).
+# Each merge is a minor version.
+# For intentional version from the commit messages use: #major, #minor, #patch, #none
+#
+# The code search/replace will only works against __GCFO_UNDEFINED_VERSION__ .
+#
+# Search the code for __GCFO_UNDEFINED_VERSION__ and replaces it with the last tag.
+# The changed files are being saved in the main branch "main". 
+# We recommend dev to use a "develop" branch as a trunk/working branch.
+#
+# When devs are ready to publish then they can craft a release using the latest tag(s).
+
+on:
+  pull_request:
+    types: [ "closed" ]
+    branches: [ "master", "main" ]
+
+env:
+   DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: true
+   FORCE_COLOR: true
+   TERM: xterm-256color
+
+concurrency: production
+
+jobs:
+  build:
+      
+    name: Update tags
+    runs-on: ubuntu-latest
+  
+    steps:
+
+      - name: Setup the environment
+        run: |
+
+          # Please use __GCFO_UNDEFINED_VERSION__ in your code
+          TMP_UNDEFINED_VERSION="__GCFO_UNDEFINED_VERSION__"
+          echo "UNDEFINED_VERSION=${TMP_UNDEFINED_VERSION}"
+          echo "UNDEFINED_VERSION=${TMP_UNDEFINED_VERSION}" >> $GITHUB_ENV
+
+      - name: CheckOut Source Code
+        uses: actions/checkout@v4
+        # continue-on-error: true
+        with:
+          # ref: main
+          fetch-depth: '0'
+          # persist-credentials: true
+          # set-safe-directory: true
+          clean: true
+
+      - name: Minor version for each merge
+        id: taggerDryRun
+        uses: anothrNick/github-tag-action@1.73.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG_PREFIX: ''
+          DRY_RUN: true
+          # PRERELEASE: true
+          # DEFAULT_BRANCH: main
+  
+      - name: Display new tag
+        run: |
+          echo "The next tag version will be: ${{ steps.taggerDryRun.outputs.new_tag }}"
+
+      - name: Display current tag
+        run: |
+          echo "The current tag is: ${{ steps.taggerDryRun.outputs.tag }}"
+
+      - name: Display part
+        run: |
+          echo "The version increment was: ${{ steps.taggerDryRun.outputs.part }}"
+
+    # DO MY BUILD HERE
+    # IN CASE OF FAILURE, THE STEP BELOW WILL NOT RUN.
+
+      - name: 🔍 Listing the files to be modified
+        id: search_code
+        run: |
+          SEARCH_CMD=$(grep -rl --exclude-dir={.git,vendor,.github} "${{ env.UNDEFINED_VERSION }}" . || true)
+          COUNT_LINES=$(grep -rl --exclude-dir={.git,vendor,.github} "${{ env.UNDEFINED_VERSION }}" . | wc -l | awk '{print ($0+0)}')
+
+          # Continue only if we have something to modify
+          if [ "$COUNT_LINES" -gt 0 ]; then
+            echo "Found ${COUNT_LINES} file(s) to modify"
+            echo "$SEARCH_CMD"
+            echo "modify_source=true" >> $GITHUB_OUTPUT
+          else
+            echo "No files containing ${{ env.UNDEFINED_VERSION }}"
+          fi
+          
+      - name: ✨ Running the modification
+        if: ${{ steps.search_code.outputs.modify_source == 'true' }}
+        run: |
+          for file in `grep -rl --exclude-dir={.git,vendor,.github} "${{ env.UNDEFINED_VERSION }}" .`; do
+            sed -i "s/${{ env.UNDEFINED_VERSION }}/${{ steps.taggerDryRun.outputs.new_tag }}/g" $file
+          done
+
+      - name: Commit and push changes
+        if: ${{ steps.search_code.outputs.modify_source == 'true' }}
+        uses: devops-infra/action-commit-push@master
+        with:
+          force: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          commit_message: "(pipeline) Version update: ${{ steps.taggerDryRun.outputs.tag }} => ${{ steps.taggerDryRun.outputs.new_tag }} (${{ steps.taggerDryRun.outputs.part }})"
+          # target_branch: main
+
+      - name: Minor version for each merge
+        uses: anothrNick/github-tag-action@1.73.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG_PREFIX: ''
+          # DRY_RUN: true
+          PRERELEASE: true
+          # DEFAULT_BRANCH: main
