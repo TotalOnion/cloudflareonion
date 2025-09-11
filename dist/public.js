@@ -10,12 +10,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     let cfoMarkets = document.getElementById('cfo-purge-container')?.children;
-    for (const cfoMarketButton of cfoMarkets) {
-        cfoMarketButton.onclick = function () {
-            if (confirm("Are you sure you want to clear the cache for " + cfoMarketButton.children[0].innerHTML)) {
-                purgeMarket(cfoMarketButton.dataset.cfoMarket);
-            }
-        };
+    if (cfoMarkets != null) {
+        for (const cfoMarketButton of cfoMarkets) {
+            cfoMarketButton.onclick = function () {
+                if (confirm("Are you sure you want to clear the cache for " + cfoMarketButton.children[0].innerHTML)) {
+                    purgeMarket(cfoMarketButton.dataset.cfoMarket);
+                }
+            };
+        }
     }
     
     async function purgeMarket(marketID) {
@@ -50,5 +52,44 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error(error);
         }
+    }
+
+    let CPTTagsContainer = document.getElementById('global-cfo_CPTtags');
+    if (CPTTagsContainer != null) {
+        ectractCurrentValue(CPTTagsContainer);
+        let contentEditables = CPTTagsContainer.querySelectorAll('[contenteditable]');
+        contentEditables.forEach(el => {
+            el.addEventListener('input', (e) => {
+                compileCPTTags(CPTTagsContainer);
+            });
+        });
+    }
+    function ectractCurrentValue(CPTTagsContainer) {
+        let CPTTagCurrentValue = document.getElementById('global-cfo_customCPTTags').value;
+        if (CPTTagCurrentValue) {
+            let decodedCurrentValue = JSON.parse(CPTTagCurrentValue);
+            if (decodedCurrentValue) {
+                let CPTRows = CPTTagsContainer.querySelectorAll('tr.global-cfo_tags-row');
+                CPTRows.forEach(CTPRow => {
+                    let tagItems = CTPRow.querySelectorAll('td');
+                    let CPT = tagItems[0].innerHTML;
+                    if (Object.hasOwn(decodedCurrentValue, CPT)) {
+                        let valueForRow = decodedCurrentValue[CPT];
+                        if (valueForRow) {
+                            tagItems[1].innerHTML = valueForRow;
+                        }
+                    }
+                });
+            }
+        }
+    }
+    function compileCPTTags(CPTTagsContainer) {
+        let CPTRows = CPTTagsContainer.querySelectorAll('tr.global-cfo_tags-row');
+        let CPTTags = {};
+        CPTRows.forEach(CTPRow => {
+            let tagItems = CTPRow.querySelectorAll('td');
+            CPTTags[tagItems[0].innerHTML] = tagItems[1].innerHTML;
+        });
+        document.getElementById('global-cfo_customCPTTags').value = JSON.stringify(CPTTags);
     }
 });

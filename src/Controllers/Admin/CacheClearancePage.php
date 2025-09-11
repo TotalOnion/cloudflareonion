@@ -123,7 +123,7 @@ class CacheClearancePage extends AbstractController
                     'warning'
                 );
 
-                $this->cfoManager->registerSavedItem($url);
+                $this->cfoManager->registerSavedItemURL($url);
             }
         }
 

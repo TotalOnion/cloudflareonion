@@ -98,14 +98,20 @@ class GlobalCfo {
         $this->loader->addAction('admin_menu', $settingsPage, 'registerPage');
         $this->loader->addAction('admin_init', $settingsPage, 'registerSettings');
         
-        // Add the cache page
+        // Add the cache clearance page
         $cacheClearancePage = new Admin\CacheClearancePage($this->getPluginName(), $this->getVersion());
         $this->loader->addAction('admin_menu', $cacheClearancePage, 'registerPage');
         $this->loader->addAction('admin_init', $cacheClearancePage, 'registerSettings');
 
+        // Add the cache tags page
+        $cacheTagsPage = new Admin\CacheTagsPage($this->getPluginName(), $this->getVersion());
+        $this->loader->addAction('admin_menu', $cacheTagsPage, 'registerPage');
+        $this->loader->addAction('admin_init', $cacheTagsPage, 'registerSettings');
+
         // Add the forms post type etc
         $cfoManager = new Admin\CfoManager($this->getPluginName(), $this->getVersion());
         $this->loader->addAction('save_post', $cfoManager, 'registerSavedPost');
+        $this->loader->addAction('wp_head', $cfoManager, 'printCacheTagsHeader');
 
         // Add the endpoints
         $API = new Admin\CfoAPI($this->getPluginName(), $this->getVersion(), $cfoManager);
