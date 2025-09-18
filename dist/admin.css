@@ -18,6 +18,11 @@
     height: 120px;
     animation: spin 2s linear infinite;
 }
+.global-cfo_tags-row {
+    td[contenteditable] {
+        background-color: white;
+    }
+}
     
 @keyframes spin {
 0% { transform: rotate(0deg); }

@@ -65,7 +65,7 @@ class CacheTagsPage extends AbstractController
         );
         add_settings_field(
             GLOBAL_CFO_NAME.'_customCPTTags',
-            'Custom tag to purge per post type',
+            'Tags to purge by PostType',
             [$this, 'renderField'],
             GLOBAL_CFO_NAME.'_cache-tags-page',
             GLOBAL_CFO_NAME.'_options_section_tags',
