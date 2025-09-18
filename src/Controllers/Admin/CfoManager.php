@@ -3,24 +3,38 @@ namespace GlobalCfo\Controllers\Admin;
 
 use GlobalCfo\Controllers\AbstractController;
 use GlobalCfo\Controllers\Admin\Logger;
+use GlobalCfo\Controllers\Admin\CacheTags;
 
 class CfoManager extends AbstractController
 {
     private Logger $logger;
+    private CacheTags $cacheTags;
 
     public function __construct($pluginName, $version)
     {
         $this->logger = new Logger($version, $pluginName);
+        $this->cacheTags = new CacheTags($version, $pluginName);
         parent::__construct($pluginName, $version);
     }
 
-    public function registerSavedItem($url)
+    public function registerSavedItemURL($url)
     {
         $this->sendPurgeRequest($this->getPurgeBodyUrl($url));
 
         if ($this->getTrailingSlashOption()) {
             $this->sendPurgeRequest($this->getPurgeBodyUrl(rtrim($url, '/')));
         }
+    }
+
+    public function registerSavedItemCacheTags($postID)
+    {
+        $purgeBody = $this->cacheTags->getPurgeBody($postID);
+        $this->sendPurgeRequest($purgeBody);
+    }
+
+    public function printCacheTagsHeader()
+    {
+        $this->cacheTags->printCacheTagsHeader();
     }
 
     public function registerSavedPost($postID)
@@ -33,12 +47,18 @@ class CfoManager extends AbstractController
         $postTypesToPurge = $this->getPostTypesOption();
 
         // Skipping purge for post types not in the list
-        if (!in_array($postType, $postTypesToPurge)) {
+        if ((empty($postTypesToPurge)) || (!empty($postTypesToPurge) && !in_array($postType, $postTypesToPurge))) {
             return;
         }
 
-        $postUrl = get_permalink($postID);
-        $this->registerSavedItem($postUrl);
+        $cacheTagsEnabled = $this->getCacheTagsEnabled();
+
+        if ( $cacheTagsEnabled ) {
+            $this->registerSavedItemCacheTags($postID);
+        } else {
+            $postUrl = get_permalink($postID);
+            $this->registerSavedItemURL($postUrl);
+        }
     }
 
     public function purgeMarket($marketId)
@@ -155,5 +175,10 @@ class CfoManager extends AbstractController
     protected function getDomainReplace(): string
     {
         return get_option(GLOBAL_CFO_NAME.'_replace_domain');
+    }
+
+    private function getCacheTagsEnabled(): string
+    {
+        return get_option(GLOBAL_CFO_NAME.'_enableCacheTags');
     }
 }
