@@ -25,7 +25,7 @@ class CacheTags extends AbstractController
         $postID = get_the_ID();
         $cacheTags = $this->getTagsToPrint($postID);
         $tagsString = implode(',', $cacheTags);
-        header('Cache-Tag: ' . $tagsString);
+        header('Cache-Tag: ' . $tagsString, false);
     }
 
     private function getTagsToPrint($postID): array {
