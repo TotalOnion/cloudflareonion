@@ -18,7 +18,7 @@ namespace GlobalCfo;
  * Plugin Name:       Global CFO
  * Plugin URI:        https://github.com/TotalOnion/cloudflareonion
  * Description:       Cloudflare cache handling plugin
- * Version:           1.1.1
+ * Version:           1.1.2
  * Author:            Johann Biteghe
  * Author URI:        https://totalonion.com
  * License:           GPL-2.0+

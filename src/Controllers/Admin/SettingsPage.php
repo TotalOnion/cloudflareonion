@@ -280,6 +280,30 @@ class SettingsPage extends AbstractController
             ]
         );
 
+        add_option(GLOBAL_CFO_NAME.'_forwarded_host_header');
+        register_setting(
+            GLOBAL_CFO_NAME.'_options',
+            GLOBAL_CFO_NAME.'_forwarded_host_header',
+            [
+                'type' => 'text',
+                'description' => 'Forwarded Host Header',
+                'sanitize_callback' => 'sanitize_text_field',
+                'show_in_rest' => true,
+                'default' => ''
+            ]
+        );
+        add_settings_field(
+            GLOBAL_CFO_NAME.'_forwarded_host_header',
+            'Add forwarded host header (leave empty for none)',
+            [$this, 'renderField'],
+            GLOBAL_CFO_NAME.'settings-page',
+            GLOBAL_CFO_NAME.'_options_section_purge',
+            [
+                'id' => GLOBAL_CFO_NAME.'_forwarded_host_header',
+                'type' => 'text'
+            ]
+        );
+
         add_option(GLOBAL_CFO_NAME.'_purgeNoTrailingSlash');
         register_setting(
             GLOBAL_CFO_NAME.'_options',
