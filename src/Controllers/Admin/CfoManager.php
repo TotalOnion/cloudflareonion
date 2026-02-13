@@ -125,9 +125,24 @@ class CfoManager extends AbstractController
     private function getPurgeBodyUrl($url): string
     {
         $url = $this->getDomainReplacedURL($url);
-        $body = json_encode([
-            'files' => [$url]
-        ]);
+        $forwardedHost = $this->getForwardedHost();
+        if ($forwardedHost) {
+            $body = json_encode([
+                'files' => [
+                    [
+                        'url' => $url,
+                        'headers' => [
+                            'X-Forwarded-Host' => $forwardedHost
+                        ]
+                    ]
+                ]
+            ]);
+        } else {
+            $body = json_encode([
+                'files' => [$url]
+            ]);
+        }
+        
         return $body;
     }
 
@@ -175,6 +190,11 @@ class CfoManager extends AbstractController
     protected function getDomainReplace(): string
     {
         return get_option(GLOBAL_CFO_NAME.'_replace_domain');
+    }
+
+    protected function getForwardedHost(): string
+    {
+        return get_option(GLOBAL_CFO_NAME.'_forwarded_host_header');
     }
 
     private function getCacheTagsEnabled(): string
