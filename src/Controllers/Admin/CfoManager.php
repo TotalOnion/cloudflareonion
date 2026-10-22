@@ -12,8 +12,8 @@ class CfoManager extends AbstractController
 
     public function __construct($pluginName, $version)
     {
-        $this->logger = new Logger($version, $pluginName);
-        $this->cacheTags = new CacheTags($version, $pluginName);
+        $this->logger = new Logger();
+        $this->cacheTags = new CacheTags();
         parent::__construct($pluginName, $version);
     }
 

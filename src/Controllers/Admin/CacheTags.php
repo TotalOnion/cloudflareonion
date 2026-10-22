@@ -31,12 +31,18 @@ class CacheTags extends AbstractController
     private function getTagsToPrint($postID): array {
         $tags = [];
         $tags[] = $this->getIDTag($postID);
+
+        if (is_archive()) {
+            $tags[] = $this->getArchiveTag($postID);
+        }
+
         return $tags;
     }
 
     private function getTagsToPurge($postID): array {
         $tags = [];
         $tags[] = $this->getIDTag($postID);
+        $tags[] = $this->getArchiveTag($postID);
         $cptTag = $this->getCptTag($postID);
         if ($cptTag) {
             $tags[] = $this->getCptTag($postID);
@@ -46,6 +52,10 @@ class CacheTags extends AbstractController
 
     private function getIDTag($postID): string {
         return 'cfo-' . $postID;
+    }
+
+    private function getArchiveTag($postID): string {
+        return 'cfo-archive-' . get_post_type($postID);
     }
 
     private function getCptTag($postID): string {
